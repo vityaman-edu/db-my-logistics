@@ -1,0 +1,38 @@
+@startuml Storage Net, Use Case, Move Arrange
+
+left to right direction
+
+actor "Manager" as manager
+actor "Administrator A" as admin_a
+actor "Administrator B" as admin_b
+actor "Transporter" as transporter
+
+usecase "Arrange a move" as external_move
+
+package System {
+  usecase "Request the move from A to B" as request_move
+
+  usecase "Approve the move request" as approve
+  usecase "Reject the move request" as reject
+
+  usecase "Notify" as notify
+}
+
+manager --> external_move
+external_move --> transporter
+
+manager --> request_move
+request_move --> admin_a
+request_move --> admin_b
+
+admin_a --> approve
+admin_b --> approve
+admin_a --> reject
+admin_b --> reject
+
+approve ..> notify : include
+reject ..> notify : include
+
+notify --> transporter
+
+@enduml

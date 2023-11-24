@@ -1,0 +1,21 @@
+@startuml Storage Net, Use Case, Move from begin
+
+left to right direction
+
+actor "Administrator A" as admin_a
+actor "Transporter" as transporter
+
+usecase "Take items away" as take_away
+
+package System {
+  usecase "Confirm taking items away" as confirm
+  usecase "Notify" as notify
+}
+
+admin_a -down-> take_away
+take_away -down-> transporter
+
+admin_a --> confirm
+confirm ..> notify : include
+
+@enduml

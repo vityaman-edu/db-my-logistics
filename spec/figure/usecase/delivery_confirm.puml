@@ -1,0 +1,21 @@
+@startuml Storage Net, Use Case, Delivery Confirm
+
+left to right direction
+
+actor "Administrator" as admin
+actor "Source" as source
+
+usecase "Deliver products" as delivery
+
+package System {
+  usecase "Confirm delivery" as confirm
+  usecase "Notify" as notify
+}
+
+source -up-> delivery
+delivery -up-> admin
+
+admin --> confirm
+confirm ..> notify : include
+
+@enduml

@@ -1,0 +1,30 @@
+@startuml Storage Net, Use Case, View Content
+
+left to right direction
+
+actor "Manager" as manager
+
+package System {
+  usecase "View items in the network" as view
+
+  usecase "Filter by a given storage" as filter_storage
+  usecase "Filter by a given order" as filter_order
+  usecase "Filter by a given move" as filter_move
+
+  usecase "Pick a storage" as pick_storage
+  usecase "Pick a move" as pick_move
+  usecase "Pick an order" as pick_order
+}
+
+manager --> view
+
+view ..> filter_storage : extend
+filter_storage ..> pick_storage : include
+
+view ..> filter_order : extend
+filter_order ..> pick_order : include
+
+view ..> filter_move : extend
+filter_move ..> pick_move : include
+
+@enduml

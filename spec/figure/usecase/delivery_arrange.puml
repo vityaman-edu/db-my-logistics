@@ -1,0 +1,37 @@
+@startuml Storage Net, Use Case, Delivery Arrange
+
+left to right direction
+
+actor "Manager" as manager
+actor "Administrator" as admin
+actor "Source" as source
+
+usecase "Arrange an external delivery" as external_delivery
+
+package System {
+  usecase "Request the delivery to storage A" as request_delivery
+
+  usecase "Review the delivery request" as review
+
+  usecase "Approve " as approve
+  usecase "Reject" as reject
+
+  usecase "Notify" as notify
+}
+
+manager --> external_delivery
+external_delivery --> source
+
+manager --> request_delivery
+request_delivery --> admin
+
+admin --> review
+review ..> approve : extend
+review ..> reject : extend
+
+approve ..> notify : include
+reject ..> notify : include
+
+notify --> source
+
+@enduml

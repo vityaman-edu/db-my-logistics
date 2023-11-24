@@ -1,0 +1,77 @@
+\documentclass[12pt]{article}
+
+\usepackage[X2,T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+\usepackage[a4paper, margin=1in]{geometry}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{wrapfig}
+\usepackage{multirow}
+\usepackage{mathtools}
+\usepackage{pgfplots}
+\usepackage{pgfplotstable}
+\usepackage{setspace}
+\usepackage{changepage}
+\usepackage{caption}
+\usepackage{csquotes}
+\usepackage{hyperref}
+\usepackage{listings}
+
+
+\pgfplotsset{compat=1.18}
+\hypersetup{
+  colorlinks = true,
+  linkcolor  = blue,
+  filecolor  = magenta,      
+  urlcolor   = darkgray,
+  pdftitle   = spec-storage-het,
+}
+
+\begin{document}
+
+\input{../section/util/title.tex}
+
+\tableofcontents
+
+\section{Введение}
+
+\subsection{Задача}
+\input{../section/begin/task.tex}
+
+\subsection{О документе}
+\input{../section/begin/about.tex}
+
+\subsection{Описание системы}
+\input{../section/begin/brief.tex}
+
+\subsection{Ключевые слова и их синонимы}
+\input{../section/begin/dict.tex}
+
+\section{Общее описание}
+
+\subsection{Решаемая проблема}
+\input{../section/func/problem.tex}
+
+\subsection{Функционал продукта}
+\input{../section/func/brief.tex}
+
+\subsection{Описание пользователей}
+\input{../section/func/user.tex}
+
+\section{Функциональные требования}
+\input{../section/func/requirement.tex}
+
+\section{Сценарии использования}
+\input{../section/usecase/delivery.tex}
+\input{../section/usecase/move.tex}
+\input{../section/usecase/withdrawal.tex}
+\input{../section/usecase/view.tex}
+
+\section{Архитектура решения}
+
+\subsection{Enity-Relationship Модель}
+\input{../section/design/er.tex}
+
+
+\end{document}
