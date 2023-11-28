@@ -1,0 +1,159 @@
+@startuml Storage Net ER Diagram
+
+entity "User" as user {
+  hr_id:            INT <<PK>>
+  --
+  nickname:         VARCHAR(31)
+  first_name:       VARCHAR(31)
+  last_name:        VARCHAR(31)
+}
+
+entity "Manager" as manager {
+  id:               INT <<PK>>
+  --
+  user_id:          INT <<FK>>
+}
+
+entity "Administrator" as administrator {
+  id:               INT <<PK>>
+  --
+  user_id:          INT <<FK>>
+}
+
+entity "Storage" as storage {
+  id:               INT <<PK>>
+  --
+  name:             VARCHAR(127)
+  location:         VARCHAR(255)
+  administrator:    INT <<FK>>
+}
+
+entity "Cell" as cell {
+  id:               INT <<PK>>
+  --
+  storage_id:       INT <<FK>>
+  item_kind_id:     INT <<FK>>
+  capacity:         INT
+  placement_date:   DATE
+}
+
+entity "Item Kind" as item_kind {
+  id:               INT <<PK>>
+  --
+  name:             VARCHAR(127)
+  expiration:       INTERVAL
+  unit:             VARCHAR(63)
+}
+
+entity "Item Group" as item_group {
+  id:               INT <<PK>>
+  --
+  item_kind_id:     INT <<FK>>
+  amount:           INT
+  manufacture_date: DATE
+  order_id:         INT <<FK>>
+}
+
+entity "Order" as order {
+  id:               INT <<PK>>
+  --
+  customer_id:      INT <<FK>>
+  creation_date:    DATE
+  deadline:         DATE
+  note:             TEXT
+}
+
+entity "Freeze" as freeze {
+  id:             INT <<PK>>
+  --
+  item_group_id:  INT <<FK>>
+  start_date:     DATE
+  duration:       INTERVAL
+  note:           TEXT
+}
+
+entity "Transfer Request" as transfer_request {
+  id:                         INT <<PK>>
+  --
+  initiator_id:               INT <<FK>>
+  transporter_id:             INT <<FK>>
+  source_storage_id:          INT <<FK>>
+  destination_storage_id:     INT <<FK>>
+  --
+  source_approver_id:         INT <<FK>>
+  source_approval_date:       DATE
+  destination_approver_id:    INT <<FK>>
+  destination_approval_date:  DATE
+  --
+  creation_date:              DATE
+  expected_begin_date:        DATE
+  expected_duration:          INTERVAL
+  note:                       TEXT
+}
+
+entity "Transfer" as transfer {
+  id:                   INT <<PK>>
+  --
+  transfer_request_id:  INT <<FK>>
+  transporter_ride_id:  INT <<FK>>
+  --
+  actual_begin_date:    DATE
+  actual_duration:      INTERVAL
+}
+
+entity "Transfer Group" as transfer_group {
+  transfer_request_id:  INT <<FK>>
+  item_group_id:        INT <<FK>>
+}
+
+entity "Transporter" as transporter {
+  id:               INT <<PK>>
+  --
+  name:             VARCHAR(127)
+  description:      TEXT
+}
+
+entity "Supplier" as supplier {
+  id:               INT <<PK>>
+  --
+  name:             VARCHAR(127)
+  description:      TEXT
+  storage_id:       INT <<FK>>
+}
+
+entity "Customer" as customer {
+  id:               INT <<PK>>
+  --
+  name:             VARCHAR(127)
+  description:      TEXT
+  storage_id:       INT <<FK>>
+}
+
+user              ||-d-o| manager             : user_id
+user              ||-d-o| administrator       : user_id
+administrator     ||-d-|{ storage             : administrator_id
+
+storage           ||-d-o{ cell                : storage_id
+cell              }o-d-|| item_kind           : item_kind_id
+freeze            }o-d-|| item_group          : item_group_id
+
+item_group        }o-d-|| item_kind           : item_kind_id
+
+order             |o-d-o{ item_group          : order_id
+
+transfer_request  }o-r-|| manager             : initiator_id
+transfer_request  }o-l--|| transporter         : transporter_id
+transfer_request  }o-d--|| storage             : source_id
+transfer_request  }o-d--|| storage             : destination_id
+transfer_request  }o-r-o| administrator       : source_approver_id
+transfer_request  }o-r-o| administrator       : destination_approver_id
+transfer_request  ||-u-o|  transfer            : request_id
+transfer_group    }o-d--o{ item_group          : item_group_id
+transfer_group    }o-u--o{ transfer_request    : item_group_id
+
+supplier    |o-l-|| storage   : storage_id
+
+customer    |o-r--|| storage  : storage_id
+customer    }|--r-o{ order    : order_id
+
+@enduml
