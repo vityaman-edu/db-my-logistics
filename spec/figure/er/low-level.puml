@@ -141,15 +141,15 @@ item_group        }o-d-|| item_kind           : item_kind_id
 
 order             |o-d-o{ item_group          : order_id
 
-transfer_request  }o-r-|| manager             : initiator_id
-transfer_request  }o-l--|| transporter         : transporter_id
-transfer_request  }o-d--|| storage             : source_id
-transfer_request  }o-d--|| storage             : destination_id
-transfer_request  }o-r-o| administrator       : source_approver_id
-transfer_request  }o-r-o| administrator       : destination_approver_id
-transfer_request  ||-u-o|  transfer            : request_id
-transfer_group    }o-d--o{ item_group          : item_group_id
-transfer_group    }o-u--o{ transfer_request    : item_group_id
+transfer_request  }o-r-||  manager            : initiator_id
+transfer_request  }o-l--|| transporter        : transporter_id
+transfer_request  }o-d--|| storage            : source_id
+transfer_request  }o-d--|| storage            : destination_id
+transfer_request  }o-r-o|  administrator      : source_approver_id
+transfer_request  }o-r-o|  administrator      : destination_approver_id
+transfer_request  ||-u-o|  transfer           : request_id
+transfer_group    }o-d--o{ item_group         : item_group_id
+transfer_group    }o-u--o{ transfer_request   : item_group_id
 
 supplier    |o-l-|| storage   : storage_id
 
