@@ -1,132 +1,132 @@
 @startuml Storage Net low-level ER Diagram
 
 entity "User" as user {
-  hr_id:            INT <<PK>>
+  <<PK>> | hr_id:            INT
   --
-  nickname:         VARCHAR(31)
-  first_name:       VARCHAR(31)
-  last_name:        VARCHAR(31)
+  ______ | nickname:         VARCHAR(31)
+  ______ | first_name:       VARCHAR(31)
+  ______ | last_name:        VARCHAR(31)
 }
 
 entity "Manager" as manager {
-  id:               INT <<PK>>
+  <<PK>>   | id:               INT
   --
-  user_id:          INT <<FK>>
+  <<FK>> _ | user_id:          INT
 }
 
 entity "Administrator" as administrator {
-  id:               INT <<PK>>
+  <<PK>>   | id:               INT
   --
-  user_id:          INT <<FK>>
+  <<FK>> _ | user_id:          INT
 }
 
 entity "Storage" as storage {
-  id:               INT <<PK>>
+  <<PK>>   | id:               INT
   --
-  name:             VARCHAR(127)
-  location:         VARCHAR(255)
-  administrator:    INT <<FK>>
+  ______   | name:             VARCHAR(127)
+  ______   | location:         VARCHAR(255)
+  <<FK>> _ | administrator:    INT 
 }
 
 entity "Cell" as cell {
-  id:               INT <<PK>>
+  <<PK>>   | id:               INT
   --
-  storage_id:       INT <<FK>>
-  item_kind_id:     INT <<FK>>
-  capacity:         INT
-  placement_date:   DATE
+  <<FK>> _ | storage_id:       INT 
+  <<FK>> _ | item_kind_id:     INT 
+  _____    | capacity:         INT
+  ______   | placement_date:   DATE
 }
 
 entity "Item Kind" as item_kind {
-  id:               INT <<PK>>
+  <<PK>>  | id:               INT
   --
-  name:             VARCHAR(127)
-  expiration:       INTERVAL
-  unit:             VARCHAR(63)
+  ______  | name:             VARCHAR(127)
+  ______  | expiration:       INTERVAL
+  ______  | unit:             VARCHAR(63)
 }
 
 entity "Item Group" as item_group {
-  id:               INT <<PK>>
+  <<PK>>   | id:               INT
   --
-  item_kind_id:     INT <<FK>>
-  amount:           INT
-  manufacture_date: DATE
-  order_id:         INT <<FK>>
+  <<FK>> _ | item_kind_id:     INT
+  _____    | amount:           INT
+  _______  | manufacture_date: DATE
+  <<FK>> _ | order_id:         INT 
 }
 
 entity "Order" as order {
-  id:               INT <<PK>>
+  <<PK>>   | id:               INT
   --
-  customer_id:      INT <<FK>>
-  creation_date:    DATE
-  deadline:         DATE
-  note:             TEXT
+  <<FK>> _ | customer_id:      INT 
+  ______   | creation_date:    DATE
+  _____    | deadline:         DATE
+  ____     | note:             TEXT
 }
 
 entity "Freeze" as freeze {
-  id:             INT <<PK>>
+  <<PK>>    | id:             INT 
   --
-  item_group_id:  INT <<FK>>
-  start_date:     DATE
-  duration:       INTERVAL
-  note:           TEXT
+  <<FK>> __ | item_group_id:  INT 
+  ______    | start_date:     DATE
+  ______    | duration:       INTERVAL
+  _____     | note:           TEXT
 }
 
 entity "Transfer Request" as transfer_request {
-  id:                         INT <<PK>>
+  <<PK>>      | id:                         INT
   --
-  initiator_id:               INT <<FK>>
-  transporter_id:             INT <<FK>>
-  source_storage_id:          INT <<FK>>
-  destination_storage_id:     INT <<FK>>
+  <<FK>> __   | initiator_id:               INT
+  <<FK>> __   | transporter_id:             INT
+  <<FK>> ___  | source_storage_id:          INT
+  <<FK>> ____ | destination_storage_id:     INT
   --
-  source_approver_id:         INT <<FK>>
-  source_approval_date:       DATE
-  destination_approver_id:    INT <<FK>>
-  destination_approval_date:  DATE
+  <<FK>> ___  | source_approver_id:         INT
+  _______     | source_approval_date:       DATE
+  <<FK>> ___  | destination_approver_id:    INT
+  ________    | destination_approval_date:  DATE
   --
-  creation_date:              DATE
-  expected_begin_date:        DATE
-  expected_duration:          INTERVAL
-  note:                       TEXT
+  _______     | creation_date:              DATE
+  ________    | expected_begin_date:        DATE
+  ________    | expected_duration:          INTERVAL
+  _____       | note:                       TEXT
 }
 
 entity "Transfer" as transfer {
-  id:                   INT <<PK>>
+  <<PK>>     | id:                   INT
   --
-  transfer_request_id:  INT <<FK>>
-  transporter_ride_id:  INT <<FK>>
+  <<FK>> ___ | transfer_request_id:  INT
+  <<FK>> ___ | transporter_ride_id:  INT
   --
-  actual_begin_date:    DATE
-  actual_duration:      INTERVAL
+  ________   | actual_begin_date:    DATE
+  ________   | actual_duration:      INTERVAL
 }
 
 entity "Transfer Group" as transfer_group {
-  transfer_request_id:  INT <<FK>>
-  item_group_id:        INT <<FK>>
+  <<FK>> | transfer_request_id:  INT
+  <<FK>> | item_group_id:        INT
 }
 
 entity "Transporter" as transporter {
-  id:               INT <<PK>>
+  <<PK>>  | id:               INT
   --
-  name:             VARCHAR(127)
-  description:      TEXT
+  ______  | name:             VARCHAR(127)
+  ______  | description:      TEXT
 }
 
 entity "Supplier" as supplier {
-  id:               INT <<PK>>
+  <<PK>>   | id:               INT
   --
-  name:             VARCHAR(127)
-  description:      TEXT
-  storage_id:       INT <<FK>>
+  ______   | name:             VARCHAR(127)
+  ______   | description:      TEXT
+  <<FK>> _ | storage_id:       INT 
 }
 
 entity "Customer" as customer {
-  id:               INT <<PK>>
+  <<PK>>    | id:               INT
   --
-  name:             VARCHAR(127)
-  description:      TEXT
-  storage_id:       INT <<FK>>
+  ______    | name:             VARCHAR(127)
+  _______   | description:      TEXT
+  <<FK>> __ | storage_id:       INT
 }
 
 user              ||-d-o| manager             : user_id
