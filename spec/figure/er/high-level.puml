@@ -1,0 +1,152 @@
+@startuml Storage Net high-level ER Diagram
+
+entity "User" as user {
+  hr_id
+  --
+  nickname
+  first_name
+  last_name
+}
+
+entity "Manager" as manager {
+  id
+  --
+  user_id
+}
+
+entity "Administrator" as administrator {
+  id
+  --
+  user_id
+  storage_id
+}
+
+entity "Storage" as storage {
+  id
+  --
+  name
+  location
+}
+
+entity "Cell" as cell {
+  id
+  --
+  storage_id
+  item_kind_id
+  capacity
+  placement_date
+}
+
+entity "Item Kind" as item_kind {
+  id
+  --
+  name
+  expiration
+  unit
+}
+
+entity "Item Group" as item_group {
+  id
+  --
+  item_kind_id
+  amount
+  manufacture_date
+  order_id
+}
+
+entity "Order" as order {
+  id
+  --
+  customer_id
+  creation_date
+  time_slice
+  note
+}
+
+entity "Freeze" as freeze {
+  id
+  --
+  item_group_id
+  start_date
+  duration
+  note
+}
+
+entity "Transfer Request" as transfer_request {
+  id
+  --
+  initiator_id
+  transporter_id
+  source_storage_id
+  destination_storage_id
+  --
+  source_approver_id
+  source_approval_date
+  destination_approver_id
+  destination_approval_date
+  --
+  creation_date
+  expected_begin_date
+  expected_duration
+  note
+}
+
+entity "Transfer Fact" as transfer {
+  id
+  --
+  transfer_request_id
+  transporter_ride_id
+  --
+  actual_begin_date
+  actual_duration
+}
+
+entity "Transporter" as transporter {
+  id
+  --
+  name
+  description
+}
+
+entity "Supplier" as supplier {
+  id
+  --
+  name
+  description
+  storage_id
+}
+
+entity "Customer" as customer {
+  id
+  --
+  name
+  description
+  storage_id
+}
+
+user              ||-d-o| manager             : is a
+user              ||-d-o| administrator       : is a
+administrator     ||-d-|{ storage             : manages
+
+storage           ||-d-o{ cell                : contains
+cell              }o-d-|| item_kind           : holds
+item_group        }o-d-|| item_kind           : contains
+freeze            }o-r-|| item_group          : can be applied to
+
+order             |o-d-o{ item_group          : tracked for
+
+transfer_request  }o-r-||  manager            : initiated by
+transfer_request  }o-l--|| transporter        : performed by
+transfer_request  }o-d--|| storage            : source is
+transfer_request  }o-d--|| storage            : destination is
+transfer_request  }o-r-o|  administrator      : source approver
+transfer_request  }o-r-o|  administrator      : destination approver
+transfer_request  ||-u-o|  transfer           : connected with external
+transfer_request  }o-d--o{ item_group         : contains
+
+supplier    |o-l-|| storage   : has its own
+
+customer    |o-r-|| storage   : has its own
+customer    }|--r-o{ order    : created by
+
+@enduml

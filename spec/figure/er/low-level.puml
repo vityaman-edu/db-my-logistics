@@ -1,4 +1,4 @@
-@startuml Storage Net ER Diagram
+@startuml Storage Net low-level ER Diagram
 
 entity "User" as user {
   hr_id:            INT <<PK>>
