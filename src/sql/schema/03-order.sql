@@ -15,5 +15,6 @@ CREATE TABLE item_group (
   id           serial       PRIMARY KEY,
   order_id     int          NOT NULL REFERENCES item_order(id),
   item_kind_id int          NOT NULL REFERENCES item_kind(id),
-  amount       positive_int NOT NULL
+  amount       positive_int NOT NULL,
+  UNIQUE (order_id, item_kind_id)
 );

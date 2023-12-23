@@ -1,110 +1,86 @@
-INSERT INTO location (name) VALUES
-  ('Moscow'), ('Omsk'), ('Kostroma');
+CREATE FUNCTION fill() RETURNS void AS $$
+DECLARE 
+  moscow_id   integer;
+  omsk_id     integer;
+  kostroma_id integer;
 
-INSERT INTO storage (name, location_id) 
-SELECT location.name || ' Storage #1' as name, id as location_id
-FROM location;
+  milk_id     integer;
+  rock_id     integer;
+  potatoe_id  integer;
 
-INSERT INTO item_kind (name, unit) VALUES
-  ('Milk', 'milliliter'), ('Rock', 'gram'), ('Potato', 'gram');
+  vitya_id    integer;
+  petya_id    integer;
+  margo_id    integer;
 
-INSERT INTO cell (storage_id, item_kind_id, capacity)
-SELECT storage.id, item_kind.id, 10
-FROM storage, item_kind
-WHERE storage.name   = 'Moscow Storage #1'
-  AND item_kind.name = 'Rock';
-  
-INSERT INTO cell (storage_id, item_kind_id, capacity)
-SELECT storage.id, item_kind.id, 20
-FROM storage, item_kind
-WHERE storage.name   = 'Omsk Storage #1'
-  AND item_kind.name = 'Potato';
+  manager_margo_id  integer;
 
-INSERT INTO cell (storage_id, item_kind_id, capacity)
-SELECT storage.id, item_kind.id, 40
-FROM storage, item_kind
-WHERE storage.name   = 'Omsk Storage #1'
-  AND item_kind.name = 'Milk';
+  moscow_storage_id   integer;
+  omsk_storage_id     integer;
+  kostroma_storage_id integer;
+  x5_storage_id       integer;
 
+  x5_consumer_id     integer;
+  milk_rock_order_id integer;
 
-INSERT INTO users (nickname, first_name, last_name) VALUES
-  ('vitya-smirnov', 'Vitya', 'Smirnov'),
-  ('petya-ivanov', 'Petya', 'Ivanov'),
-  ('margo-kuprina', 'Margarita', 'Kuprina');
-
-INSERT INTO manager (user_id)
-SELECT users.id as user_id 
-FROM users WHERE nickname = 'margo-kuprina';
-
-INSERT INTO admin (user_id, storage_id)
-SELECT users.id as user_id, storage.id as storage_id
-FROM users, storage
-WHERE users.nickname = 'vitya-smirnov'
-  AND storage.name = 'Omsk Storage #1';
-
-INSERT INTO admin (user_id, storage_id)
-SELECT users.id as user_id, storage.id as storage_id
-FROM users, storage
-WHERE users.nickname = 'petya-ivanov'
-  AND storage.name = 'Moscow Storage #1';
+  arslanbek_id        integer;
+  transfer_request_id integer;
 
 
-INSERT INTO users (nickname, first_name, last_name) VALUES
-  ('consumer-5ka', 'Consumer', 'Consumer');
+  item_group item_group;
+BEGIN
+  moscow_id   := location_create('Moscow');
+  omsk_id     := location_create('Omsk');
+  kostroma_id := location_create('Kostroma');
 
-INSERT INTO storage (name, location_id) 
-SELECT 'consumer-storage-5ka' as name, id as location_id
-FROM location WHERE location.name = 'Moscow';
+  milk_id    := item_kind_create('Milk',    'milliliter');
+  rock_id    := item_kind_create('Rock',    'gram');
+  potatoe_id := item_kind_create('Potatoe', 'gram');
 
-INSERT INTO cell (storage_id, item_kind_id, capacity)
-SELECT storage.id, item_kind.id, 4000
-FROM storage, item_kind
-WHERE storage.name   = 'consumer-storage-5ka'
-  AND item_kind.name = 'Milk';
+  vitya_id := user_create('vitya-smirnov', 'Vitya',     'Smirnov');
+  petya_id := user_create('petya-ivanov',  'Petya',     'Ivanov');
+  margo_id := user_create('margo-kuprina', 'Margarita', 'Kuprina');
 
-INSERT INTO cell (storage_id, item_kind_id, capacity)
-SELECT storage.id, item_kind.id, 100000000
-FROM storage, item_kind
-WHERE storage.name   = 'consumer-storage-5ka'
-  AND item_kind.name = 'Rock';
+  manager_margo_id := manager_assign(margo_id);
 
-INSERT INTO consumer (name, note, storage_id)
-SELECT '5ka Shops Net'::text, 'He''s a strange guy.'::text, storage.id
-FROM storage WHERE storage.name = 'consumer-storage-5ka';
+  moscow_storage_id := storage_create('Moscow Storage', moscow_id);
+  PERFORM admin_assign(petya_id, moscow_storage_id);
+  PERFORM cell_create(moscow_storage_id, rock_id, 10);
 
-INSERT INTO item_order (consumer_id, note)
-SELECT consumer.id, 'Need some milk and heavy rock!'
-FROM consumer WHERE consumer.name = '5ka Shops Net';
+  omsk_storage_id := storage_create('Omsk Storage', omsk_id);
+  PERFORM admin_assign(vitya_id, omsk_storage_id);
+  PERFORM cell_create(omsk_storage_id, potatoe_id, 20);
+  PERFORM cell_create(omsk_storage_id, milk_id, 40);
 
-INSERT INTO item_group (order_id, item_kind_id, amount)
-SELECT item_order.id, item_kind.id, 1000
-FROM item_order, item_kind
-WHERE item_order.note = 'Need some milk and heavy rock!'
-  AND item_kind.name = 'Milk';
+  kostroma_storage_id := storage_create('Kostroma Storage', kostroma_id);
 
-INSERT INTO item_group (order_id, item_kind_id, amount)
-SELECT item_order.id, item_kind.id, 100000000
-FROM item_order, item_kind
-WHERE item_order.note = 'Need some milk and heavy rock!'
-  AND item_kind.name = 'Rock';
+  x5_storage_id := storage_create('X5 Group Storage', moscow_id);
+  PERFORM admin_assign(vitya_id, x5_storage_id);
+  PERFORM cell_create(x5_storage_id, milk_id, 4000);
+  PERFORM cell_create(x5_storage_id, rock_id, 100000000);
 
-INSERT INTO transporter (name, note) VALUES
-  ('Arlanbek', 'Yandex Taxi Rating 5.0');
+  x5_consumer_id := consumer_create('5ka Shops Net', x5_storage_id, 'He''s a strange guy.');
+  milk_rock_order_id := order_create(x5_consumer_id, 'Need some milk and heavy rock!');
+  PERFORM item_group_create(milk_rock_order_id, milk_id, 1000);
+  PERFORM item_group_create(milk_rock_order_id, rock_id, 100000000);
 
-INSERT INTO transfer_request (
-  manager_id, src_storage_id, dst_storage_id, transporter_id, 
-  expected_begin_date, expected_duration
-)
-SELECT 
-  manager.id, src.id, dst.id, transporter.id, 
-  '2011-01-01'::date, '2 hours'::interval
-FROM manager, storage as src, storage as dst, transporter, users
-WHERE users.nickname = 'margo-kuprina'
-  AND src.name = 'Moscow Storage #1'
-  AND dst.name = 'consumer-storage-5ka'
-  AND transporter.name = 'Arlanbek'
-  AND manager.user_id = users.id;
+  arslanbek_id := transporter_create('Arlanbek', 'Yandex Taxi Rating 5.0');
 
-INSERT INTO transfer_group (transfer_request_id, item_group_id)
-SELECT transfer_request.id, item_group.id
-FROM transfer_request, item_group;
+  transfer_request_id := transfer_request_create(
+    manager_margo_id,   -- initiator
+    moscow_storage_id,  -- src
+    x5_storage_id,      -- dst
+    arslanbek_id,       -- transporter
+    '2011-01-01'::date, -- begin
+    '2 hours'::interval -- duration
+  );
+
+  FOR item_group IN SELECT * FROM item_group 
+  LOOP
+    PERFORM transfer_group_create(transfer_request_id, item_group.id);
+  END LOOP;
+
+  RETURN;
+END
+$$ LANGUAGE plpgsql;
+
+SELECT fill();

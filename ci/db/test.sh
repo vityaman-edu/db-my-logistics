@@ -22,12 +22,25 @@ run() {
 
 print "Creating the database..."
 
-run "util/00-drop.sql" | head -5
+run "util/00-drop.sql" | tail -5
 run "schema/00-domain.sql"
 run "schema/01-storage.sql"
 run "schema/02-role.sql"
 run "schema/03-order.sql"
 run "schema/04-transfer.sql"
+run "logic/storage/location_create.sql"
+run "logic/storage/storage_create.sql"
+run "logic/storage/item_kind_create.sql"
+run "logic/storage/cell_create.sql"
+run "logic/role/manager_assign.sql"
+run "logic/role/admin_assign.sql"
+run "logic/role/user_create.sql"
+run "logic/role/consumer_create.sql"
+run "logic/role/transporter_create.sql"
+run "logic/order/order_create.sql"
+run "logic/order/item_group_create.sql"
+run "logic/transfer/transfer_request_create.sql"
+run "logic/transfer/transfer_group_create.sql"
 run "util/01-fill.sql"
 
 print "Database created!"
