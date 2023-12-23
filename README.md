@@ -9,5 +9,5 @@ ITMO Databases Course Work
 ```bash
 docker compose up
 docker exec -it db-my-logistics-db-1 bash
-bash my-logistics/ci/db/test.sh
+bash my-logistics/ci/db/test.sh postgres postgres
 ```
