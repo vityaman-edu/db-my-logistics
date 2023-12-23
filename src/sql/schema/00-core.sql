@@ -1,0 +1,3 @@
+CREATE DOMAIN nickname AS VARCHAR(31) CHECK (VALUE ~ '[a-z-]{3,31}');
+
+CREATE DOMAIN name AS VARCHAR(31) CHECK (VALUE ~ '[a-zA-Z''-]{3,31}');
