@@ -27,5 +27,6 @@ run "schema/01-storage.sql"
 run "schema/02-role.sql"
 run "schema/03-order.sql"
 run "schema/04-transfer.sql"
+run "util/01-fill.sql"
 
 print "Database created!"

@@ -1,6 +1,6 @@
 CREATE TABLE location (
   id SERIAL PRIMARY KEY,
-  name VARCHAR(63) NOT NULL UNIQUE CHECK (name ~ '[a-zA-Z''-]{5,63}')
+  name VARCHAR(63) NOT NULL UNIQUE CHECK (name ~ '[a-zA-Z''-]{4,63}')
 );
 
 CREATE TABLE storage (
@@ -11,8 +11,8 @@ CREATE TABLE storage (
 
 CREATE TABLE item_kind (
   id SERIAL PRIMARY KEY,
-  name VARCHAR(127) NOT NULL CHECK (name ~ '[a-zA-Z''-]{3,127}'),
-  unit VARCHAR(63) NOT NULL CHECK (unit ~ '[a-z-.]{3,63}')
+  name VARCHAR(127) NOT NULL CHECK (name ~ '[a-zA-Z ''-]{3,127}'),
+  unit VARCHAR(63) NOT NULL CHECK (unit ~ '[a-z.]{3,63}')
 );
 
 CREATE TABLE cell (
