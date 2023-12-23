@@ -22,7 +22,8 @@ run() {
 
 print "Creating the database..."
 
-run "util/00-drop.sql"
+run "util/00-drop.sql" | head -5
+run "schema/00-domain.sql"
 run "schema/01-storage.sql"
 run "schema/02-role.sql"
 run "schema/03-order.sql"

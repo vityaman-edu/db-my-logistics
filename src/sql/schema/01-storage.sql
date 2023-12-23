@@ -1,23 +1,23 @@
 CREATE TABLE location (
-  id SERIAL PRIMARY KEY,
-  name VARCHAR(63) NOT NULL UNIQUE CHECK (name ~ '[a-zA-Z''-]{4,63}')
+  id   serial        PRIMARY KEY,
+  name location_name NOT NULL UNIQUE
 );
 
 CREATE TABLE storage (
-  id SERIAL PRIMARY KEY,
-  name VARCHAR(63) NOT NULL UNIQUE CHECK (name ~ '[a-zA-Z''-]{5,63}'),
-  location_id INT NOT NULL REFERENCES location(id)
+  id          serial       PRIMARY KEY,
+  name        storage_name NOT NULL UNIQUE,
+  location_id int          NOT NULL REFERENCES location(id)
 );
 
 CREATE TABLE item_kind (
-  id SERIAL PRIMARY KEY,
-  name VARCHAR(127) NOT NULL CHECK (name ~ '[a-zA-Z ''-]{3,127}'),
-  unit VARCHAR(63) NOT NULL CHECK (unit ~ '[a-z.]{3,63}')
+  id   serial         PRIMARY KEY,
+  name item_kind_name NOT NULL,
+  unit item_kind_unit NOT NULL
 );
 
 CREATE TABLE cell (
-  id SERIAL PRIMARY KEY,
-  storage_id INT NOT NULL REFERENCES storage(id),
-  item_kind_id INT NOT NULL REFERENCES item_kind(id),
-  capacity INT NOT NULL CHECK (capacity > 0)
+  id           serial       PRIMARY KEY,
+  storage_id   int          NOT NULL REFERENCES storage(id),
+  item_kind_id int          NOT NULL REFERENCES item_kind(id),
+  capacity     positive_int NOT NULL
 );
