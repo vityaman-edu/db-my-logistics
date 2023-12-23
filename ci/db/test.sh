@@ -23,7 +23,9 @@ run() {
 print "Creating the database..."
 
 run "util/00-drop.sql"
-run "schema/00-core.sql"
-run "schema/01-user.sql"
+run "schema/01-storage.sql"
+run "schema/02-role.sql"
+run "schema/03-order.sql"
+run "schema/04-transfer.sql"
 
 print "Database created!"
