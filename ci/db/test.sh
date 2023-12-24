@@ -42,6 +42,7 @@ run "logic/storage/storage_create.sql"
 run "logic/supply/supply_create.sql"
 run "logic/supply/supply_atom_create.sql"
 run "logic/transfer/transfer_create.sql"
+run "logic/transfer/transfer_integrity.sql"
 run "logic/transfer/transfer_atom_create.sql"
 
 run "util/01-fill.sql"

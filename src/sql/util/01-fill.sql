@@ -52,7 +52,7 @@ BEGIN
 
   x5_storage_id := storage_create('X5 Group Storage', moscow_id);
   PERFORM admin_assign(vitya_id, x5_storage_id);
-  PERFORM storage_cell_create(x5_storage_id, potatoe_id, 100);
+  PERFORM storage_cell_create(x5_storage_id, potatoe_id, 120);
   PERFORM storage_cell_create(x5_storage_id, milk_id, 4000);
   PERFORM storage_cell_create(x5_storage_id, rock_id, 1444);
   PERFORM storage_cell_create(x5_storage_id, rock_id, 100);
@@ -62,7 +62,7 @@ BEGIN
   PERFORM supply_atom_create(supply_id, rock_id, 8880);
 
   supply_id := supply_create(x5_storage_id);
-  PERFORM supply_atom_create(supply_id, potatoe_id, 200);
+  PERFORM supply_atom_create(supply_id, potatoe_id, 211);
   PERFORM supply_atom_create(supply_id, rock_id, 1000);
 
   supply_id := supply_create(omsk_storage_id);
@@ -91,6 +91,8 @@ BEGIN
     x5_storage_id
   );
   PERFORM transfer_atom_create(transfer_id, milk_id, 666);
+  -- Uncomment to see balance integrity error
+  -- PERFORM transfer_atom_create(transfer_id, milk_id, 100);
   PERFORM transfer_atom_create(transfer_id, rock_id, 111);
 
   RETURN;
