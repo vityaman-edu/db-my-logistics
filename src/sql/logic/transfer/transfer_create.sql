@@ -1,12 +1,12 @@
-CREATE FUNCTION transfer_request_create(
+CREATE FUNCTION transfer_create(
   manager_id          integer,
   src_storage_id      integer,
   dst_storage_id      integer
 ) RETURNS integer AS $$
 DECLARE 
-  transfer_request_id integer;
+  transfer_id integer;
 BEGIN
-  INSERT INTO transfer_request (
+  INSERT INTO transfer (
     manager_id,
     src_storage_id, 
     dst_storage_id
@@ -14,8 +14,8 @@ BEGIN
     manager_id,
     src_storage_id, 
     dst_storage_id
-  ) RETURNING id INTO STRICT transfer_request_id;
+  ) RETURNING id INTO STRICT transfer_id;
   
-  RETURN transfer_request_id;
+  RETURN transfer_id;
 END;
 $$ LANGUAGE plpgsql;

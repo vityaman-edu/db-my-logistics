@@ -19,9 +19,9 @@ DECLARE
   kostroma_storage_id integer;
   x5_storage_id       integer;
 
-  transfer_request_1_id integer;
-  transfer_request_2_id integer;
-  transfer_request_3_id integer;
+  transfer_1_id integer;
+  transfer_2_id integer;
+  transfer_3_id integer;
 BEGIN
   moscow_id   := location_create('Moscow');
   omsk_id     := location_create('Omsk');
@@ -54,29 +54,29 @@ BEGIN
   PERFORM storage_cell_create(x5_storage_id, rock_id, 100000000);
   PERFORM storage_cell_create(x5_storage_id, rock_id, 1);
 
-  transfer_request_1_id := transfer_request_create(
+  transfer_1_id := transfer_create(
     manager_margo_id,
     moscow_storage_id,
     x5_storage_id
   );
-  PERFORM transfer_atom_create(transfer_request_1_id, milk_id, 1000);
-  PERFORM transfer_atom_create(transfer_request_1_id, rock_id, 100000000);
+  PERFORM transfer_atom_create(transfer_1_id, milk_id, 1000);
+  PERFORM transfer_atom_create(transfer_1_id, rock_id, 100000000);
 
-  transfer_request_2_id := transfer_request_create(
+  transfer_2_id := transfer_create(
     manager_margo_id,
     x5_storage_id,
     moscow_storage_id
   );
-  PERFORM transfer_atom_create(transfer_request_2_id, potatoe_id, 100);
-  PERFORM transfer_atom_create(transfer_request_2_id, rock_id, 888);
+  PERFORM transfer_atom_create(transfer_2_id, potatoe_id, 100);
+  PERFORM transfer_atom_create(transfer_2_id, rock_id, 888);
 
-  transfer_request_3_id := transfer_request_create(
+  transfer_3_id := transfer_create(
     manager_margo_id,
     omsk_storage_id,
     x5_storage_id
   );
-  PERFORM transfer_atom_create(transfer_request_3_id, milk_id, 666);
-  PERFORM transfer_atom_create(transfer_request_3_id, rock_id, 111);
+  PERFORM transfer_atom_create(transfer_3_id, milk_id, 666);
+  PERFORM transfer_atom_create(transfer_3_id, rock_id, 111);
 
   RETURN;
 END

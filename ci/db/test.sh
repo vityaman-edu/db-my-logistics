@@ -36,7 +36,7 @@ run "logic/storage/storage_balance.sql"
 run "logic/storage/storage_capacity.sql"
 run "logic/storage/storage_cell_create.sql"
 run "logic/storage/storage_create.sql"
-run "logic/transfer/transfer_request_create.sql"
+run "logic/transfer/transfer_create.sql"
 run "logic/transfer/transfer_atom_create.sql"
 run "util/01-fill.sql"
 
