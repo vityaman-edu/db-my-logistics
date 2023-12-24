@@ -57,9 +57,7 @@ BEGIN
   transfer_request_1_id := transfer_request_create(
     manager_margo_id,
     moscow_storage_id,
-    x5_storage_id,
-    '2011-01-01'::date,
-    '2 hours'::interval
+    x5_storage_id
   );
   PERFORM transfer_atom_create(transfer_request_1_id, milk_id, 1000);
   PERFORM transfer_atom_create(transfer_request_1_id, rock_id, 100000000);
@@ -67,9 +65,7 @@ BEGIN
   transfer_request_2_id := transfer_request_create(
     manager_margo_id,
     x5_storage_id,
-    moscow_storage_id,
-    '2012-01-01'::date,
-    '3 hours'::interval
+    moscow_storage_id
   );
   PERFORM transfer_atom_create(transfer_request_2_id, potatoe_id, 100);
   PERFORM transfer_atom_create(transfer_request_2_id, rock_id, 888);
@@ -77,9 +73,7 @@ BEGIN
   transfer_request_3_id := transfer_request_create(
     manager_margo_id,
     omsk_storage_id,
-    x5_storage_id,
-    '2011-01-01'::date,
-    '2 hours'::interval
+    x5_storage_id
   );
   PERFORM transfer_atom_create(transfer_request_3_id, milk_id, 666);
   PERFORM transfer_atom_create(transfer_request_3_id, rock_id, 111);
