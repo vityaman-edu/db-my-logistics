@@ -71,27 +71,15 @@ BEGIN
   PERFORM supply_atom_create(supply_id, milk_id, 700);
   PERFORM supply_atom_create(supply_id, rock_id, 999);
 
-  transfer_id := transfer_create(
-    manager_margo_id,
-    moscow_storage_id,
-    x5_storage_id
-  );
+  transfer_id := transfer_create(moscow_storage_id, x5_storage_id);
   PERFORM transfer_atom_create(transfer_id, milk_id, 1000);
   PERFORM transfer_atom_create(transfer_id, rock_id, 1000);
 
-  transfer_id := transfer_create(
-    manager_margo_id,
-    x5_storage_id,
-    moscow_storage_id
-  );
+  transfer_id := transfer_create(x5_storage_id, moscow_storage_id);
   PERFORM transfer_atom_create(transfer_id, potatoe_id, 100);
   PERFORM transfer_atom_create(transfer_id, rock_id, 888);
 
-  transfer_id := transfer_create(
-    manager_margo_id,
-    omsk_storage_id,
-    x5_storage_id
-  );
+  transfer_id := transfer_create(omsk_storage_id, x5_storage_id);
   PERFORM transfer_atom_create(transfer_id, milk_id, 666);
   -- Uncomment the next line to produce balance integrity error
   -- PERFORM transfer_atom_create(transfer_id, milk_id, 100);

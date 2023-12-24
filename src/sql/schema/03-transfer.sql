@@ -1,6 +1,5 @@
 CREATE TABLE transfer (
   id                  serial    PRIMARY KEY,
-  manager_id          integer   NOT NULL REFERENCES manager(id),
   src_storage_id      integer   NOT NULL REFERENCES storage(id),
   dst_storage_id      integer   NOT NULL REFERENCES storage(id)
 );
