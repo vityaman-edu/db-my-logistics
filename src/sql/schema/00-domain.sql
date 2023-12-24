@@ -32,13 +32,3 @@ DROP DOMAIN IF EXISTS item_kind_unit;
 CREATE DOMAIN item_kind_unit
 AS varchar(63) 
 CHECK (VALUE ~ '[a-z.]{3,63}');
-
-DROP DOMAIN IF EXISTS consumer_name;
-CREATE DOMAIN consumer_name
-AS varchar(127) 
-CHECK (VALUE ~ '[a-zA-Z''-]{3,127}');
-
-DROP DOMAIN IF EXISTS transporter_name;
-CREATE DOMAIN transporter_name
-AS varchar(127) 
-CHECK (VALUE ~ '[a-zA-Z''-]{3,127}');
