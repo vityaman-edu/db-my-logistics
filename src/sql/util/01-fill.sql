@@ -19,6 +19,8 @@ DECLARE
   kostroma_storage_id integer;
   x5_storage_id       integer;
 
+  supply_id     integer;
+
   transfer_1_id integer;
   transfer_2_id integer;
   transfer_3_id integer;
@@ -53,6 +55,18 @@ BEGIN
   PERFORM storage_cell_create(x5_storage_id, milk_id, 4000);
   PERFORM storage_cell_create(x5_storage_id, rock_id, 100000000);
   PERFORM storage_cell_create(x5_storage_id, rock_id, 1);
+
+  supply_id := supply_create(moscow_storage_id);
+  PERFORM supply_atom_create(supply_id, milk_id, 1555);
+  PERFORM supply_atom_create(supply_id, rock_id, 888000000);
+
+  supply_id := supply_create(x5_storage_id);
+  PERFORM supply_atom_create(supply_id, potatoe_id, 200);
+  PERFORM supply_atom_create(supply_id, rock_id, 1000);
+
+  supply_id := supply_create(omsk_storage_id);
+  PERFORM supply_atom_create(supply_id, milk_id, 700);
+  PERFORM supply_atom_create(supply_id, rock_id, 999);
 
   transfer_1_id := transfer_create(
     manager_margo_id,
