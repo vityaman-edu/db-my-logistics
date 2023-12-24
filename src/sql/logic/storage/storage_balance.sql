@@ -33,7 +33,7 @@ CREATE VIEW storage_outcome AS
   GROUP BY transfer.src_storage_id, transfer_atom.item_kind_id;
 
 CREATE VIEW storage_balance AS 
-  SELECT storage_id, item_kind_id, SUM(amount) AS amount
+  SELECT storage_id, item_kind_id, SUM(COALESCE(amount, 0)) AS amount
   FROM (
     (SELECT * FROM storage_income) UNION 
     (SELECT * FROM storage_outcome))

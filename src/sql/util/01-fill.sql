@@ -56,6 +56,8 @@ BEGIN
   PERFORM storage_cell_create(x5_storage_id, milk_id, 4000);
   PERFORM storage_cell_create(x5_storage_id, rock_id, 1444);
   PERFORM storage_cell_create(x5_storage_id, rock_id, 100);
+  -- Comment the next line to produce capacity integrity error
+  PERFORM storage_cell_create(x5_storage_id, rock_id, 600);
 
   supply_id := supply_create(moscow_storage_id);
   PERFORM supply_atom_create(supply_id, milk_id, 1555);
@@ -91,7 +93,7 @@ BEGIN
     x5_storage_id
   );
   PERFORM transfer_atom_create(transfer_id, milk_id, 666);
-  -- Uncomment to see balance integrity error
+  -- Uncomment the next line to produce balance integrity error
   -- PERFORM transfer_atom_create(transfer_id, milk_id, 100);
   PERFORM transfer_atom_create(transfer_id, rock_id, 111);
 

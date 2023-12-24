@@ -5,7 +5,8 @@ DECLARE
   item_kind_id integer;
   amount       positive_int;
 
-  source_balance integer;
+  source_balance  integer;
+  target_capacity integer;
 
   source_id   integer;
   target_id   integer;
@@ -19,15 +20,25 @@ BEGIN
   FROM transfer
   WHERE transfer.id = transfer_id;
 
-  source_balance := storage_kind_balance(source_id, item_kind_id);
+  source_balance  := storage_kind_balance(source_id, item_kind_id);
+  target_capacity := storage_kind_free_capacity(target_id, item_kind_id);
 
   IF source_balance < amount THEN
     RAISE EXCEPTION
-      'can''t withdraw % units '
+      'can not transfer % units '
       'of type with id % '
       'from storage with id % '
       'with balance %'
     , amount, item_kind_id, source_id, source_balance;
+  END IF;
+
+  IF target_capacity < amount THEN
+    RAISE EXCEPTION
+      'can not transfer % units '
+      'of type with id % '
+      'to storage with id % '
+      'with capacity %'
+    , amount, item_kind_id, target_id, target_capacity;
   END IF;
 
   RETURN NEW;

@@ -14,3 +14,19 @@ CREATE VIEW storage_free_capacity AS
     (SELECT * FROM storage_full_capacity)
   )
   GROUP BY storage_id, item_kind_id;
+
+CREATE FUNCTION storage_kind_free_capacity (
+  storage_id   integer,
+  item_kind_id integer 
+) RETURNS integer AS $$
+DECLARE 
+  free_capacity integer;
+BEGIN
+  SELECT capacity INTO free_capacity
+  FROM storage_free_capacity
+  WHERE storage_free_capacity.storage_id = storage_kind_free_capacity.storage_id
+    AND storage_free_capacity.item_kind_id = storage_kind_free_capacity.item_kind_id;
+
+  RETURN free_capacity;
+END;
+$$ LANGUAGE plpgsql;
