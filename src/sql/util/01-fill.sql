@@ -20,6 +20,7 @@ DECLARE
   x5_storage_id       integer;
 
   supply_id     integer;
+  consume_id    integer;
   transfer_id   integer;
 BEGIN
   moscow_id   := location_create('Moscow');
@@ -90,6 +91,13 @@ BEGIN
   -- Uncomment the next line to produce balance integrity error
   -- PERFORM transfer_atom_create(transfer_id, milk_id, 100);
   PERFORM transfer_atom_create(transfer_id, rock_id, 111);
+
+  consume_id := consume_create(
+    x5_storage_id, '2023-01-07 00:00'::timestamp);
+  PERFORM consume_atom_create(consume_id, milk_id, 429);
+  PERFORM consume_atom_create(consume_id, rock_id, 1);
+  -- Uncomment the next line to produce balance integrity error
+  -- PERFORM consume_atom_create(consume_id, potatoe_id, 1000);
 
   RETURN;
 END

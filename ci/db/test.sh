@@ -29,22 +29,31 @@ run "schema/01-storage.sql"
 run "schema/02-role.sql"
 run "schema/03-transfer.sql"
 run "schema/04-supply.sql"
+run "schema/05-consume.sql"
 
 run "logic/item/item_kind_create.sql"
+
 run "logic/role/manager_assign.sql"
 run "logic/role/admin_assign.sql"
 run "logic/role/user_create.sql"
+
 run "logic/storage/location_create.sql"
 run "logic/storage/storage_balance.sql"
 run "logic/storage/storage_capacity.sql"
 run "logic/storage/storage_cell_create.sql"
 run "logic/storage/storage_create.sql"
-run "logic/supply/supply_create.sql"
-run "logic/supply/supply_atom_create.sql"
-run "logic/supply/supply_integrity.sql"
+
 run "logic/transfer/transfer_create.sql"
 run "logic/transfer/transfer_integrity.sql"
 run "logic/transfer/transfer_atom_create.sql"
+
+run "logic/supply/supply_create.sql"
+run "logic/supply/supply_atom_create.sql"
+run "logic/supply/supply_integrity.sql"
+
+run "logic/consume/consume_create.sql"
+run "logic/consume/consume_atom_create.sql"
+run "logic/consume/consume_integrity.sql"
 
 run "util/01-fill.sql"
 
