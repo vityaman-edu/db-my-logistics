@@ -12,8 +12,6 @@ DECLARE
   petya_id            integer;
   margo_id            integer;
 
-  manager_margo_id    integer;
-
   moscow_storage_id   integer;
   omsk_storage_id     integer;
   kostroma_storage_id integer;
@@ -35,7 +33,7 @@ BEGIN
   petya_id := user_create('petya-ivanov',  'Petya',     'Ivanov');
   margo_id := user_create('margo-kuprina', 'Margarita', 'Kuprina');
 
-  manager_margo_id := manager_assign(margo_id);
+  PERFORM manager_assign(margo_id);
 
   moscow_storage_id := storage_create('Moscow Storage', moscow_id);
   PERFORM admin_assign(petya_id, moscow_storage_id);
@@ -75,25 +73,32 @@ BEGIN
   transfer_id := transfer_create(
     moscow_storage_id, x5_storage_id,
     '2023-01-04 00:00'::timestamp, '1 hour'::interval,
-    manager_margo_id);
+    margo_id);
   PERFORM transfer_atom_create(transfer_id, milk_id, 400);
   PERFORM transfer_atom_create(transfer_id, rock_id, 1000);
+  PERFORM transfer_approve(transfer_id, petya_id);
+  PERFORM transfer_approve(transfer_id, vitya_id);
 
   transfer_id := transfer_create(
     x5_storage_id, moscow_storage_id,
     '2023-01-04 00:00'::timestamp, '1 hour'::interval,
-    manager_margo_id);
+    margo_id);
   PERFORM transfer_atom_create(transfer_id, potatoe_id, 100);
   PERFORM transfer_atom_create(transfer_id, rock_id, 888);
+  PERFORM transfer_approve(transfer_id, petya_id);
+  PERFORM transfer_approve(transfer_id, vitya_id);
 
   transfer_id := transfer_create(
     omsk_storage_id, x5_storage_id,
     '2023-01-06 00:00'::timestamp, '1 hour'::interval,
-    manager_margo_id);
+    margo_id);
   PERFORM transfer_atom_create(transfer_id, milk_id, 30);
   -- Uncomment the next line to produce balance integrity error
   -- PERFORM transfer_atom_create(transfer_id, milk_id, 100);
   PERFORM transfer_atom_create(transfer_id, rock_id, 111);
+  PERFORM transfer_approve(transfer_id, vitya_id);
+  -- Uncomment the next line to produce rights integrity error
+  -- PERFORM transfer_approve(transfer_id, petya_id);
 
   consume_id := consume_create(
     x5_storage_id, '2023-01-07 00:00'::timestamp);

@@ -11,7 +11,9 @@ CREATE TABLE transfer (
   source_approver_id  integer   REFERENCES admin(id),
   target_approver_id  integer   REFERENCES admin(id),
 
-  creation_moment timestamp NOT NULL DEFAULT current_timestamp
+  creation_moment timestamp NOT NULL DEFAULT current_timestamp,
+
+  CONSTRAINT transfer_is_not_loop CHECK (source_id != target_id)
 );
 
 CREATE TABLE transfer_atom (

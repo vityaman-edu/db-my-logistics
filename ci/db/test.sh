@@ -43,6 +43,7 @@ run "logic/storage/storage_capacity.sql"
 run "logic/storage/storage_cell_create.sql"
 run "logic/storage/storage_create.sql"
 
+run "logic/transfer/transfer_approve.sql"
 run "logic/transfer/transfer_create.sql"
 run "logic/transfer/transfer_integrity.sql"
 run "logic/transfer/transfer_atom_create.sql"
