@@ -17,7 +17,7 @@ run() {
         -h localhost -p 5432 \
         -d $DATABASE_NAME \
         -U $DATABASE_USER \
-        -a -f src/sql/$1
+        -a -f src/main/sql/$1
 }
 
 print "Creating the database..."
