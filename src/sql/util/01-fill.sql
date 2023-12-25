@@ -20,7 +20,7 @@ DECLARE
   x5_storage_id       integer;
 
   supply_id     integer;
-  transfer_id integer;
+  transfer_id   integer;
 BEGIN
   moscow_id   := location_create('Moscow');
   omsk_id     := location_create('Omsk');
@@ -59,28 +59,34 @@ BEGIN
   -- Comment the next line to produce capacity integrity error
   PERFORM storage_cell_create(x5_storage_id, rock_id, 600);
 
-  supply_id := supply_create(moscow_storage_id);
-  PERFORM supply_atom_create(supply_id, milk_id, 1555);
+  supply_id := supply_create(moscow_storage_id, '2023-01-01 00:00'::timestamp);
+  PERFORM supply_atom_create(supply_id, milk_id, 555);
   PERFORM supply_atom_create(supply_id, rock_id, 8880);
 
-  supply_id := supply_create(x5_storage_id);
-  PERFORM supply_atom_create(supply_id, potatoe_id, 211);
+  supply_id := supply_create(x5_storage_id, '2023-01-02 00:00'::timestamp);
+  PERFORM supply_atom_create(supply_id, potatoe_id, 112);
   PERFORM supply_atom_create(supply_id, rock_id, 1000);
 
-  supply_id := supply_create(omsk_storage_id);
-  PERFORM supply_atom_create(supply_id, milk_id, 700);
-  PERFORM supply_atom_create(supply_id, rock_id, 999);
+  supply_id := supply_create(omsk_storage_id, '2023-01-03 00:00'::timestamp);
+  PERFORM supply_atom_create(supply_id, milk_id, 30);
+  PERFORM supply_atom_create(supply_id, rock_id, 899);
 
-  transfer_id := transfer_create(moscow_storage_id, x5_storage_id);
-  PERFORM transfer_atom_create(transfer_id, milk_id, 1000);
+  transfer_id := transfer_create(
+    moscow_storage_id, x5_storage_id,
+    '2023-01-04 00:00'::timestamp, '1 hour'::interval);
+  PERFORM transfer_atom_create(transfer_id, milk_id, 400);
   PERFORM transfer_atom_create(transfer_id, rock_id, 1000);
 
-  transfer_id := transfer_create(x5_storage_id, moscow_storage_id);
+  transfer_id := transfer_create(
+    x5_storage_id, moscow_storage_id,
+    '2023-01-04 00:00'::timestamp, '1 hour'::interval);
   PERFORM transfer_atom_create(transfer_id, potatoe_id, 100);
   PERFORM transfer_atom_create(transfer_id, rock_id, 888);
 
-  transfer_id := transfer_create(omsk_storage_id, x5_storage_id);
-  PERFORM transfer_atom_create(transfer_id, milk_id, 666);
+  transfer_id := transfer_create(
+    omsk_storage_id, x5_storage_id,
+    '2023-01-06 00:00'::timestamp, '1 hour'::interval);
+  PERFORM transfer_atom_create(transfer_id, milk_id, 30);
   -- Uncomment the next line to produce balance integrity error
   -- PERFORM transfer_atom_create(transfer_id, milk_id, 100);
   PERFORM transfer_atom_create(transfer_id, rock_id, 111);

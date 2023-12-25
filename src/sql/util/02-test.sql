@@ -1,29 +1,13 @@
--- SELECT storage.name, item_kind.name, amount
--- FROM storage
--- JOIN storage_income ON storage.id = storage_income.storage_id
--- JOIN item_kind ON storage_income.item_kind_id = item_kind.id
--- ORDER BY storage.name;
-
--- SELECT storage.name, item_kind.name, amount
--- FROM storage
--- JOIN storage_outcome ON storage.id = storage_outcome.storage_id
--- JOIN item_kind ON storage_outcome.item_kind_id = item_kind.id
--- ORDER BY storage.name;
-
 SELECT storage.name, item_kind.name, amount
 FROM storage
-JOIN storage_balance ON storage.id = storage_balance.storage_id
+JOIN storage_balance('2023-01-03 00:00'::timestamp) 
+  ON storage.id = storage_balance.storage_id
 JOIN item_kind ON storage_balance.item_kind_id = item_kind.id
-ORDER BY storage.name;
-
--- SELECT storage.name, item_kind.name, capacity
--- FROM storage
--- JOIN storage_capacity ON storage.id = storage_capacity.storage_id
--- JOIN item_kind ON storage_capacity.item_kind_id = item_kind.id
--- ORDER BY storage.name;
+ORDER BY storage.name, item_kind.name;
 
 SELECT storage.name, item_kind.name, capacity
 FROM storage
-JOIN storage_free_capacity ON storage.id = storage_free_capacity.storage_id
-JOIN item_kind ON storage_free_capacity.item_kind_id = item_kind.id
-ORDER BY storage.name;
+JOIN storage_capacity_free('2023-01-03 00:00'::timestamp) 
+  ON storage.id = storage_capacity_free.storage_id
+JOIN item_kind ON storage_capacity_free.item_kind_id = item_kind.id
+ORDER BY storage.name, item_kind.name;

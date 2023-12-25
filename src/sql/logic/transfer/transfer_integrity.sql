@@ -8,37 +8,51 @@ DECLARE
   source_balance  integer;
   target_capacity integer;
 
-  source_id   integer;
-  target_id   integer;
+  source_id     integer;
+  target_id     integer;
+  withdraw_moment timestamp;
+  income_moment   timestamp;
 BEGIN
   transfer_id  := NEW.transfer_id;
   item_kind_id := NEW.item_kind_id;
   amount       := NEW.amount;
 
-  SELECT transfer.source_id, transfer.target_id 
-  INTO source_id, target_id
+  SELECT 
+    transfer.source_id, 
+    transfer.target_id,
+    transfer.withdraw_moment,
+    transfer.withdraw_moment + transfer.duration
+  INTO 
+    source_id, 
+    target_id, 
+    withdraw_moment, 
+    income_moment
   FROM transfer
   WHERE transfer.id = transfer_id;
 
-  source_balance  := storage_kind_balance(source_id, item_kind_id);
-  target_capacity := storage_kind_free_capacity(target_id, item_kind_id);
+  source_balance  := 
+    storage_kind_balance(source_id, withdraw_moment, item_kind_id);
+  target_capacity := 
+    storage_kind_capacity_free(target_id, income_moment, item_kind_id);
 
   IF source_balance < amount THEN
     RAISE EXCEPTION
-      'can not transfer % units '
+      'can withdraw % units '
       'of type with id % '
       'from storage with id % '
-      'with balance %'
-    , amount, item_kind_id, source_id, source_balance;
+      'with balance % '
+      'on %'
+    , amount, item_kind_id, source_id, source_balance, withdraw_moment;
   END IF;
 
   IF target_capacity < amount THEN
     RAISE EXCEPTION
-      'can not transfer % units '
+      'can income % units '
       'of type with id % '
       'to storage with id % '
-      'with capacity %'
-    , amount, item_kind_id, target_id, target_capacity;
+      'with capacity % '
+      'on %'
+    , amount, item_kind_id, target_id, target_capacity, income_moment;
   END IF;
 
   RETURN NEW;
