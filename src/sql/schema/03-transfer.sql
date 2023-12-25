@@ -1,7 +1,7 @@
 CREATE TABLE transfer (
   id                  serial    PRIMARY KEY,
-  src_storage_id      integer   NOT NULL REFERENCES storage(id),
-  dst_storage_id      integer   NOT NULL REFERENCES storage(id)
+  source_id      integer   NOT NULL REFERENCES storage(id),
+  target_id      integer   NOT NULL REFERENCES storage(id)
 );
 
 CREATE TABLE transfer_atom (

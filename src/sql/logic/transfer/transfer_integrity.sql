@@ -15,7 +15,7 @@ BEGIN
   item_kind_id := NEW.item_kind_id;
   amount       := NEW.amount;
 
-  SELECT src_storage_id, dst_storage_id 
+  SELECT transfer.source_id, transfer.target_id 
   INTO source_id, target_id
   FROM transfer
   WHERE transfer.id = transfer_id;

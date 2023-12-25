@@ -1,16 +1,16 @@
 CREATE FUNCTION transfer_create(
-  src_storage_id      integer,
-  dst_storage_id      integer
+  source_id      integer,
+  target_id      integer
 ) RETURNS integer AS $$
 DECLARE 
   transfer_id integer;
 BEGIN
   INSERT INTO transfer (
-    src_storage_id, 
-    dst_storage_id
+    source_id, 
+    target_id
   ) VALUES (
-    src_storage_id, 
-    dst_storage_id
+    source_id, 
+    target_id
   ) RETURNING id INTO STRICT transfer_id;
   
   RETURN transfer_id;

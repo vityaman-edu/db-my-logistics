@@ -1,6 +1,6 @@
 CREATE TABLE supply (
   id             serial  PRIMARY KEY,
-  dst_storage_id integer NOT NULL REFERENCES storage(id)
+  target_id integer NOT NULL REFERENCES storage(id)
 );
 
 CREATE TABLE supply_atom (
