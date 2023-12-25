@@ -1,7 +1,7 @@
 CREATE FUNCTION transfer_atom_create(
-  transfer_id integer,
-  item_kind_id        integer,
-  amount              positive_int
+  transfer_id  integer,
+  item_kind_id integer,
+  amount       positive_int
 ) RETURNS integer AS $$
 DECLARE 
   transfer_atom_id integer;

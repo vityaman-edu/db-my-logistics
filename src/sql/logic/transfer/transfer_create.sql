@@ -1,6 +1,6 @@
 CREATE FUNCTION transfer_create(
-  source_id      integer,
-  target_id      integer
+  source_id integer,
+  target_id integer
 ) RETURNS integer AS $$
 DECLARE 
   transfer_id integer;
