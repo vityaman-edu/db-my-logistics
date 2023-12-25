@@ -1,7 +1,8 @@
 CREATE TABLE supply (
-  id        serial    PRIMARY KEY,
-  target_id integer   NOT NULL REFERENCES storage(id),
-  moment    timestamp NOT NULL
+  id              serial    PRIMARY KEY,
+  target_id       integer   NOT NULL REFERENCES storage(id),
+  moment          timestamp NOT NULL,
+  creation_moment timestamp NOT NULL DEFAULT current_timestamp
 );
 
 CREATE TABLE supply_atom (

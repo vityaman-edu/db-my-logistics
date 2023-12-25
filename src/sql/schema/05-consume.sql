@@ -1,7 +1,8 @@
 CREATE TABLE consume (
-  id        serial    PRIMARY KEY,
-  source_id integer   NOT NULL REFERENCES storage(id),
-  moment    timestamp NOT NULL
+  id              serial    PRIMARY KEY,
+  source_id       integer   NOT NULL REFERENCES storage(id),
+  moment          timestamp NOT NULL,
+  creation_moment timestamp NOT NULL DEFAULT current_timestamp
 );
 
 CREATE TABLE consume_atom (

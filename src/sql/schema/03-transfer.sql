@@ -2,8 +2,9 @@ CREATE TABLE transfer (
   id              serial    PRIMARY KEY,
   source_id       integer   NOT NULL REFERENCES storage(id),
   target_id       integer   NOT NULL REFERENCES storage(id),
-  withdraw_moment timestamp      NOT NULL,
-  duration        interval  NOT NULL
+  withdraw_moment timestamp NOT NULL,
+  duration        interval  NOT NULL,
+  creation_moment timestamp NOT NULL DEFAULT current_timestamp
 );
 
 CREATE TABLE transfer_atom (
