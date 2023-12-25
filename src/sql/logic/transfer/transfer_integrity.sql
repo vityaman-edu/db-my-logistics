@@ -60,5 +60,5 @@ END;
 $transfer_integrity_check$ LANGUAGE plpgsql;
 
 CREATE TRIGGER transfer_integrity_check
-BEFORE INSERT ON transfer_atom
+BEFORE INSERT OR UPDATE ON transfer_atom
 FOR EACH ROW EXECUTE FUNCTION transfer_integrity_check();

@@ -1,8 +1,9 @@
 CREATE FUNCTION transfer_create(
-  source_id     integer,
-  target_id     integer,
+  source_id       integer,
+  target_id       integer,
   withdraw_moment timestamp,
-  duration      interval
+  duration        interval,
+  initiator_id    integer
 ) RETURNS integer AS $$
 DECLARE 
   transfer_id integer;
@@ -11,12 +12,14 @@ BEGIN
     source_id, 
     target_id,
     withdraw_moment,
-    duration
+    duration,
+    initiator_id
   ) VALUES (
     source_id, 
     target_id,
     withdraw_moment,
-    duration
+    duration,
+    initiator_id
   ) RETURNING id INTO STRICT transfer_id;
   
   RETURN transfer_id;
