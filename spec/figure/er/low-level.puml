@@ -1,0 +1,159 @@
+@startuml Storage Net low-level ER Diagram
+
+entity "User" as user {
+  <<PK>> | hr_id:            INT
+  --
+  ______ | nickname:         VARCHAR(31)
+  ______ | first_name:       VARCHAR(31)
+  ______ | last_name:        VARCHAR(31)
+}
+
+entity "Manager" as manager {
+  <<PK>>   | id:               INT
+  --
+  <<FK>> _ | user_id:          INT
+}
+
+entity "Administrator" as administrator {
+  <<PK>>   | id:               INT
+  --
+  <<FK>> _ | user_id:          INT
+}
+
+entity "Storage" as storage {
+  <<PK>>   | id:               INT
+  --
+  ______   | name:             VARCHAR(127)
+  ______   | location:         VARCHAR(255)
+  <<FK>> _ | administrator:    INT 
+}
+
+entity "Cell" as cell {
+  <<PK>>   | id:               INT
+  --
+  <<FK>> _ | storage_id:       INT 
+  <<FK>> _ | item_kind_id:     INT 
+  _____    | capacity:         INT
+  ______   | placement_date:   DATE
+}
+
+entity "Item Kind" as item_kind {
+  <<PK>>  | id:               INT
+  --
+  ______  | name:             VARCHAR(127)
+  ______  | expiration:       INTERVAL
+  ______  | unit:             VARCHAR(63)
+}
+
+entity "Item Group" as item_group {
+  <<PK>>   | id:               INT
+  --
+  <<FK>> _ | item_kind_id:     INT
+  _____    | amount:           INT
+  _______  | manufacture_date: DATE
+  <<FK>> _ | order_id:         INT 
+}
+
+entity "Order" as order {
+  <<PK>>   | id:               INT
+  --
+  <<FK>> _ | customer_id:      INT 
+  ______   | creation_date:    DATE
+  _____    | deadline:         DATE
+  ____     | note:             TEXT
+}
+
+entity "Freeze" as freeze {
+  <<PK>>    | id:             INT 
+  --
+  <<FK>> __ | item_group_id:  INT 
+  ______    | start_date:     DATE
+  ______    | duration:       INTERVAL
+  _____     | note:           TEXT
+}
+
+entity "Transfer Request" as transfer_request {
+  <<PK>>      | id:                         INT
+  --
+  <<FK>> __   | initiator_id:               INT
+  <<FK>> __   | transporter_id:             INT
+  <<FK>> ___  | source_storage_id:          INT
+  <<FK>> ____ | destination_storage_id:     INT
+  --
+  <<FK>> ___  | source_approver_id:         INT
+  _______     | source_approval_date:       DATE
+  <<FK>> ___  | destination_approver_id:    INT
+  ________    | destination_approval_date:  DATE
+  --
+  _______     | creation_date:              DATE
+  ________    | expected_begin_date:        DATE
+  ________    | expected_duration:          INTERVAL
+  _____       | note:                       TEXT
+}
+
+entity "Transfer" as transfer {
+  <<PK>>     | id:                   INT
+  --
+  <<FK>> ___ | transfer_request_id:  INT
+  <<FK>> ___ | transporter_ride_id:  INT
+  --
+  ________   | actual_begin_date:    DATE
+  ________   | actual_duration:      INTERVAL
+}
+
+entity "Transfer Group" as transfer_group {
+  <<FK>> | transfer_request_id:  INT
+  <<FK>> | item_group_id:        INT
+}
+
+entity "Transporter" as transporter {
+  <<PK>>  | id:               INT
+  --
+  ______  | name:             VARCHAR(127)
+  ______  | description:      TEXT
+}
+
+entity "Supplier" as supplier {
+  <<PK>>   | id:               INT
+  --
+  ______   | name:             VARCHAR(127)
+  ______   | description:      TEXT
+  <<FK>> _ | storage_id:       INT 
+}
+
+entity "Customer" as customer {
+  <<PK>>    | id:               INT
+  --
+  ______    | name:             VARCHAR(127)
+  _______   | description:      TEXT
+  <<FK>> __ | storage_id:       INT
+}
+
+user              ||-d-o| manager             : user_id
+user              ||-d-o| administrator       : user_id
+administrator     ||-d-|{ storage             : administrator_id
+
+storage           ||-d-o{ cell                : storage_id
+cell              }o-d-|| item_kind           : item_kind_id
+freeze            }o-d-|| item_group          : item_group_id
+
+item_group        }o-d-|| item_kind           : item_kind_id
+
+order             |o-d-o{ item_group          : order_id
+
+transfer_request  }o-r-||  manager            : initiator_id
+transfer_request  }o-l--|| transporter        : transporter_id
+transfer_request  }o-d--|| storage            : source_id
+transfer_request  }o-d--|| storage            : destination_id
+transfer_request  }o-r-o|  administrator      : source_approver_id
+transfer_request  }o-r-o|  administrator      : destination_approver_id
+transfer_request  ||-u-o|  transfer           : request_id
+transfer_group    }o-d--o{ item_group         : item_group_id
+transfer_group    }o-u--o{ transfer_request   : item_group_id
+
+supplier    |o-l-|| storage   : storage_id
+
+customer    |o-r--|| storage  : storage_id
+customer    }|--r-o{ order    : order_id
+
+@enduml

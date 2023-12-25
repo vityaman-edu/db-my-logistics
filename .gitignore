@@ -6,8 +6,8 @@
 *.out
 *.synctex.gz
 *.toc
-*.pdf
+# *.pdf
 
 # VSCode
-out/
+out/^(spec)
 .vscode
