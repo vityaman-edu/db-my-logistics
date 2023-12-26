@@ -12,8 +12,8 @@ CREATE FUNCTION storage_transfer_income (
   FROM transfer
   JOIN transfer_atom ON transfer_atom.transfer_id = transfer.id
   WHERE transfer.withdraw_moment + transfer.duration <= moment
-    AND transfer.source_approver_id IS NOT NULL
-    AND transfer.target_approver_id IS NOT NULL
+    -- AND transfer.source_approver_id IS NOT NULL
+    -- AND transfer.target_approver_id IS NOT NULL
   GROUP BY transfer.target_id, item_kind_id;
 $$ LANGUAGE SQL;
 
@@ -43,7 +43,7 @@ CREATE FUNCTION storage_income (
 ) AS $$
   SELECT storage_id, item_kind_id, SUM(amount) AS amount
   FROM (
-    (SELECT * FROM storage_transfer_income(moment)) UNION 
+    (SELECT * FROM storage_transfer_income(moment)) UNION ALL
     (SELECT * FROM storage_supply_income(moment)))
   GROUP BY storage_id, item_kind_id;
 $$ LANGUAGE SQL;
@@ -62,8 +62,8 @@ CREATE FUNCTION storage_outcome (
   FROM transfer
   JOIN transfer_atom ON transfer_atom.transfer_id = transfer.id
   WHERE transfer.withdraw_moment <= moment
-    AND transfer.source_approver_id IS NOT NULL
-    AND transfer.target_approver_id IS NOT NULL
+    -- AND transfer.source_approver_id IS NOT NULL
+    -- AND transfer.target_approver_id IS NOT NULL
   GROUP BY transfer.source_id, transfer_atom.item_kind_id;
 $$ LANGUAGE SQL;
 
@@ -76,7 +76,7 @@ CREATE FUNCTION storage_balance (
 ) AS $$
   SELECT storage_id, item_kind_id, SUM(amount) AS amount
   FROM (
-    (SELECT * FROM storage_income(moment)) UNION 
+    (SELECT * FROM storage_income(moment)) UNION ALL
     (SELECT * FROM storage_outcome(moment)))
   GROUP BY storage_id, item_kind_id;
 $$ LANGUAGE SQL;
