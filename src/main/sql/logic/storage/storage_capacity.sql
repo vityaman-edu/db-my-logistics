@@ -23,7 +23,7 @@ CREATE FUNCTION storage_capacity_free (
 ) AS $$
   SELECT storage_id, item_kind_id, SUM(capacity) as capacity
   FROM (
-    (SELECT * FROM storage_capacity_total) UNION
+    (SELECT * FROM storage_capacity_total) UNION ALL
     (SELECT * FROM storage_capacity_occupied(moment)))
   GROUP BY storage_id, item_kind_id;
 $$ LANGUAGE SQL;

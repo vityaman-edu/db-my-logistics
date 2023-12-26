@@ -100,6 +100,39 @@ BEGIN
   -- Uncomment the next line to produce rights integrity error
   -- PERFORM transfer_approve(transfer_id, petya_id);
 
+  -- Roundtrip check
+  transfer_id := transfer_create(
+    x5_storage_id, omsk_storage_id,
+    '2023-01-06 01:00'::timestamp, '1 hour'::interval,
+    margo_id);
+  PERFORM transfer_atom_create(transfer_id, milk_id, 30);
+  PERFORM transfer_atom_create(transfer_id, rock_id, 111);
+  PERFORM transfer_approve(transfer_id, vitya_id);
+
+  transfer_id := transfer_create(
+    omsk_storage_id, x5_storage_id,
+    '2023-01-06 02:00'::timestamp, '1 hour'::interval,
+    margo_id);
+  PERFORM transfer_atom_create(transfer_id, milk_id, 30);
+  PERFORM transfer_atom_create(transfer_id, rock_id, 111);
+  PERFORM transfer_approve(transfer_id, vitya_id);
+
+  transfer_id := transfer_create(
+    x5_storage_id, omsk_storage_id,
+    '2023-01-06 03:00'::timestamp, '1 hour'::interval,
+    margo_id);
+  PERFORM transfer_atom_create(transfer_id, milk_id, 30);
+  PERFORM transfer_atom_create(transfer_id, rock_id, 111);
+  PERFORM transfer_approve(transfer_id, vitya_id);
+
+  transfer_id := transfer_create(
+    omsk_storage_id, x5_storage_id,
+    '2023-01-06 04:00'::timestamp, '1 hour'::interval,
+    margo_id);
+  PERFORM transfer_atom_create(transfer_id, milk_id, 30);
+  PERFORM transfer_atom_create(transfer_id, rock_id, 111);
+  PERFORM transfer_approve(transfer_id, vitya_id);
+
   consume_id := consume_create(
     x5_storage_id, '2023-01-07 00:00'::timestamp);
   PERFORM consume_atom_create(consume_id, milk_id, 429);

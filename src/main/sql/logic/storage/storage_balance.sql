@@ -43,7 +43,7 @@ CREATE FUNCTION storage_income (
 ) AS $$
   SELECT storage_id, item_kind_id, SUM(amount) AS amount
   FROM (
-    (SELECT * FROM storage_transfer_income(moment)) UNION 
+    (SELECT * FROM storage_transfer_income(moment)) UNION ALL
     (SELECT * FROM storage_supply_income(moment)))
   GROUP BY storage_id, item_kind_id;
 $$ LANGUAGE SQL;
@@ -76,7 +76,7 @@ CREATE FUNCTION storage_balance (
 ) AS $$
   SELECT storage_id, item_kind_id, SUM(amount) AS amount
   FROM (
-    (SELECT * FROM storage_income(moment)) UNION 
+    (SELECT * FROM storage_income(moment)) UNION ALL
     (SELECT * FROM storage_outcome(moment)))
   GROUP BY storage_id, item_kind_id;
 $$ LANGUAGE SQL;
