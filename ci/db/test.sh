@@ -8,13 +8,15 @@ print() {
     printf "$YC[test] $1$NC\n"
 }
 
-DATABASE_NAME=$1
-DATABASE_USER=$2
+DATABASE_HOST=$1
+DATABASE_NAME=$2
+DATABASE_USER=$3
 
 run() {
     print "Running SQL script: $1..."
     psql \
-        -h localhost -p 5432 \
+        -h $DATABASE_HOST \
+        -p 5432 \
         -d $DATABASE_NAME \
         -U $DATABASE_USER \
         -a -f src/main/sql/$1
