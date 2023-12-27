@@ -47,8 +47,8 @@ CREATE VIEW storage_transaction_consume_withdraw AS
 CREATE VIEW storage_transaction AS
   SELECT * 
   FROM (
-    (SELECT * FROM storage_transaction_supply_income     AS si) UNION ALL 
-    (SELECT * FROM storage_transaction_transfer_income   AS ti) UNION ALL 
-    (SELECT * FROM storage_transaction_transfer_withdraw AS tw) UNION ALL 
-    (SELECT * FROM storage_transaction_consume_withdraw  AS cw)
+    (SELECT * FROM storage_transaction_supply_income    ) AS si UNION ALL 
+    (SELECT * FROM storage_transaction_transfer_income  ) AS ti UNION ALL 
+    (SELECT * FROM storage_transaction_transfer_withdraw) AS tw UNION ALL 
+    (SELECT * FROM storage_transaction_consume_withdraw ) AS cw
   ) AS st;
