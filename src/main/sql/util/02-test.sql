@@ -39,11 +39,7 @@ ORDER BY storage_transaction.moment, storage.name, item_kind.name;
 
 CREATE FUNCTION max_moment() RETURNS timestamp AS $$
   SELECT MAX(moment) 
-  FROM (
-    SELECT MAX(transfer.withdraw_moment + transfer.duration) AS moment FROM transfer
-  ) UNION ALL (
-    SELECT MAX(supply.moment) AS moment FROM supply
-  )
+  FROM storage_transaction;
 $$ LANGUAGE SQL;
 
 SELECT storage.name, item_kind.name, amount

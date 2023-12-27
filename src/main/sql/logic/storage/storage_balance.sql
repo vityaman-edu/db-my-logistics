@@ -10,7 +10,7 @@ CREATE FUNCTION storage_balance (
     storage_transaction.item_kind_id AS item_kind_id,
     SUM(storage_transaction.amount) AS amount
   FROM storage_transaction
-  WHERE storage_transaction.moment <= moment
+  WHERE storage_transaction.moment <= storage_balance.moment
   GROUP BY 
     storage_transaction.storage_id, 
     storage_transaction.item_kind_id;
