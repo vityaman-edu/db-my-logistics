@@ -38,6 +38,7 @@ run "logic/role/admin_assign.sql"
 run "logic/role/user_create.sql"
 
 run "logic/storage/location_create.sql"
+run "logic/storage/storage_transaction.sql"
 run "logic/storage/storage_balance.sql"
 run "logic/storage/storage_capacity.sql"
 run "logic/storage/storage_cell_create.sql"
