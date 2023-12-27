@@ -1,3 +1,11 @@
+CREATE FUNCTION transfer_is_commited (
+  transfr transfer
+) RETURNS boolean AS $$
+  SELECT
+    (transfr.source_approver_id IS NOT NULL) AND 
+    (transfr.target_approver_id IS NOT NULL);
+$$ LANGUAGE SQL;
+
 CREATE VIEW storage_transaction_supply_income AS
   SELECT 
     supply.moment             AS moment,
@@ -14,7 +22,8 @@ CREATE VIEW storage_transaction_transfer_income AS
     transfer_atom.item_kind_id                   AS item_kind_id, 
     transfer_atom.amount                         AS amount
   FROM transfer
-  JOIN transfer_atom ON transfer_atom.transfer_id = transfer.id;
+  JOIN transfer_atom ON transfer_atom.transfer_id = transfer.id
+  WHERE transfer_is_commited(transfer);
 
 CREATE VIEW storage_transaction_transfer_withdraw AS
   SELECT 
@@ -23,7 +32,8 @@ CREATE VIEW storage_transaction_transfer_withdraw AS
     transfer_atom.item_kind_id  AS item_kind_id,
     -transfer_atom.amount       AS amount
   FROM transfer
-  JOIN transfer_atom ON transfer_atom.transfer_id = transfer.id;
+  JOIN transfer_atom ON transfer_atom.transfer_id = transfer.id
+  WHERE transfer_is_commited(transfer);
 
 CREATE VIEW storage_transaction_consume_withdraw AS
   SELECT 

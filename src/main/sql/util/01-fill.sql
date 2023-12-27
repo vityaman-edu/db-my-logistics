@@ -156,6 +156,20 @@ BEGIN
   -- supply_id := supply_create(moscow_storage_id, '2023-01-06 00:00'::timestamp);
   -- PERFORM supply_atom_create(supply_id, potatoe_id, 100);
 
+  -- Test uncommited transfers
+  transfer_id := transfer_create(
+    moscow_storage_id, x5_storage_id,
+    '2023-01-08 00:00'::timestamp, '1 hour'::interval,
+    margo_id);
+  PERFORM transfer_atom_create(transfer_id, milk_id, 155);
+
+  consume_id := consume_create(
+    moscow_storage_id, '2023-01-07 05:00'::timestamp);
+  PERFORM consume_atom_create(consume_id, milk_id, 155);
+  
+  -- PERFORM transfer_approve(transfer_id, vitya_id);
+  -- PERFORM transfer_approve(transfer_id, petya_id);
+
   RETURN;
 END
 $$ LANGUAGE plpgsql;
