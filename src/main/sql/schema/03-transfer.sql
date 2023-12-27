@@ -20,17 +20,13 @@ CREATE TABLE transfer (
   CHECK (withdraw_moment <= income_moment)
 );
 
-CREATE INDEX transfer_moment_idx 
+CREATE INDEX transfer_withdraw_moment_idx 
 ON transfer
-USING btree(withdraw_moment)
-WHERE source_approver_id IS NOT NULL 
-  AND target_approver_id IS NOT NULL;
+USING btree(withdraw_moment);
 
-CREATE INDEX transfer_moment_idx 
+CREATE INDEX transfer_income_moment_idx 
 ON transfer
-USING btree(income_moment)
-WHERE source_approver_id IS NOT NULL 
-  AND target_approver_id IS NOT NULL;
+USING btree(income_moment);
 
 CREATE TABLE transfer_atom (
   id                  serial        PRIMARY KEY,
