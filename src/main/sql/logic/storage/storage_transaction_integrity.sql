@@ -67,6 +67,7 @@ BEGIN
     WHERE storage_transaction.moment > storage_transaction_validate.moment
       AND storage_transaction.storage_id = storage_transaction_validate.storage_id
       AND storage_transaction.item_kind_id = storage_transaction_validate.item_kind_id
+    ORDER BY storage_transaction.moment
   LOOP
     balance := storage_balance_apply(balance, 
       transact.moment, transact.storage_id, 
