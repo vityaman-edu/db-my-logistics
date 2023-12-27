@@ -3,7 +3,7 @@ RETURNS trigger AS $consume_integrity_check$
 DECLARE
   consume_id   integer;
   item_kind_id integer;
-  amount       positive_int;
+  amount       integer;
 
   source_balance  integer;
 
@@ -23,18 +23,8 @@ BEGIN
   FROM consume
   WHERE consume.id = consume_id;
 
-  source_balance := 
-    storage_kind_balance(source_id, withdraw_moment, item_kind_id);
-
-  IF source_balance < amount THEN
-    RAISE EXCEPTION
-      'can withdraw % units '
-      'of type with id % '
-      'from storage with id % '
-      'with balance % '
-      'on %'
-    , amount, item_kind_id, source_id, source_balance, withdraw_moment;
-  END IF;
+  PERFORM storage_transaction_validate(
+    withdraw_moment, source_id, item_kind_id, -amount);
 
   RETURN NEW;
 END;
