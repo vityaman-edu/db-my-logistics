@@ -12,6 +12,7 @@ FROM ((
     JOIN storage AS target ON target.id = transfer.target_id
     JOIN transfer_atom ON transfer_atom.transfer_id = transfer.id
     JOIN item_kind ON transfer_atom.item_kind_id = item_kind.id
+    AS t1
   ) UNION ALL (
     SELECT 
       NULL  AS withdraw,
@@ -24,6 +25,7 @@ FROM ((
     JOIN storage AS target ON target.id = supply.target_id
     JOIN supply_atom ON supply_atom.supply_id = supply.id
     JOIN item_kind ON supply_atom.item_kind_id = item_kind.id
+    AS t2
   ))
 ORDER BY withdraw NULLS FIRST, income;
 
