@@ -16,6 +16,10 @@ CREATE TABLE transfer (
   CONSTRAINT transfer_is_not_loop CHECK (source_id != target_id)
 );
 
+CREATE INDEX transfer_moment_idx 
+ON transfer
+USING btree(withdraw_moment);
+
 CREATE TABLE transfer_atom (
   id                  serial        PRIMARY KEY,
   transfer_id         integer       NOT NULL REFERENCES transfer(id),

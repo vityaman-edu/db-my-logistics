@@ -5,6 +5,10 @@ CREATE TABLE consume (
   creation_moment timestamp NOT NULL DEFAULT current_timestamp
 );
 
+CREATE INDEX consume_moment_idx 
+ON consume
+USING btree(moment);
+
 CREATE TABLE consume_atom (
   id           serial       PRIMARY KEY,
   consume_id   integer      NOT NULL REFERENCES consume(id),

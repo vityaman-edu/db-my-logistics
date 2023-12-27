@@ -5,6 +5,10 @@ CREATE TABLE supply (
   creation_moment timestamp NOT NULL DEFAULT current_timestamp
 );
 
+CREATE INDEX supply_moment_idx 
+ON supply
+USING btree(moment);
+
 CREATE TABLE supply_atom (
   id           serial       PRIMARY KEY,
   supply_id    integer      NOT NULL REFERENCES supply(id),

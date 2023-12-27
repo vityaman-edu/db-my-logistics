@@ -64,4 +64,6 @@ run "util/01-fill.sql"
 
 run "util/02-test.sql"
 
+run "util/03-high-load.sql"
+
 print "Database created!"
