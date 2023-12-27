@@ -1,72 +1,3 @@
-CREATE FUNCTION storage_transfer_income (
-  moment timestamp
-) RETURNS TABLE (
-  storage_id   integer,
-  item_kind_id integer, 
-  amount       integer
-) AS $$
-  SELECT 
-    transfer.target_id         AS storage_id,
-    transfer_atom.item_kind_id AS item_kind_id, 
-    SUM(transfer_atom.amount)  AS amount
-  FROM transfer
-  JOIN transfer_atom ON transfer_atom.transfer_id = transfer.id
-  WHERE transfer.withdraw_moment + transfer.duration <= moment
-    -- AND transfer.source_approver_id IS NOT NULL
-    -- AND transfer.target_approver_id IS NOT NULL
-  GROUP BY transfer.target_id, item_kind_id;
-$$ LANGUAGE SQL;
-
-CREATE FUNCTION storage_supply_income (
-  moment timestamp
-) RETURNS TABLE (
-  storage_id   integer,
-  item_kind_id integer, 
-  amount       integer
-) AS $$
-  SELECT 
-    supply.target_id AS storage_id, 
-    item_kind_id, 
-    SUM(amount) AS amount
-  FROM supply
-  JOIN supply_atom ON supply_atom.supply_id = supply.id
-  WHERE supply.moment <= moment
-  GROUP BY supply.target_id, item_kind_id;
-$$ LANGUAGE SQL;
-
-CREATE FUNCTION storage_income (
-  moment timestamp
-) RETURNS TABLE (
-  storage_id   integer,
-  item_kind_id integer, 
-  amount       integer
-) AS $$
-  SELECT storage_id, item_kind_id, SUM(amount) AS amount
-  FROM (
-    (SELECT * FROM storage_transfer_income(moment)) UNION ALL
-    (SELECT * FROM storage_supply_income(moment)))
-  GROUP BY storage_id, item_kind_id;
-$$ LANGUAGE SQL;
-
-CREATE FUNCTION storage_outcome (
-  moment timestamp
-) RETURNS TABLE (
-  storage_id   integer,
-  item_kind_id integer, 
-  amount       integer
-) AS $$
-  SELECT
-      transfer.source_id         AS storage_id,
-      transfer_atom.item_kind_id AS item_kind_id, 
-      -SUM(amount)               AS amount
-  FROM transfer
-  JOIN transfer_atom ON transfer_atom.transfer_id = transfer.id
-  WHERE transfer.withdraw_moment <= moment
-    -- AND transfer.source_approver_id IS NOT NULL
-    -- AND transfer.target_approver_id IS NOT NULL
-  GROUP BY transfer.source_id, transfer_atom.item_kind_id;
-$$ LANGUAGE SQL;
-
 CREATE FUNCTION storage_balance (
   moment timestamp
 ) RETURNS TABLE (
@@ -74,11 +5,15 @@ CREATE FUNCTION storage_balance (
   item_kind_id integer, 
   amount       integer
 ) AS $$
-  SELECT storage_id, item_kind_id, SUM(amount) AS amount
-  FROM (
-    (SELECT * FROM storage_income(moment)) UNION ALL
-    (SELECT * FROM storage_outcome(moment)))
-  GROUP BY storage_id, item_kind_id;
+  SELECT
+    storage_transaction.storage_id AS storage_id,
+    storage_transaction.item_kind_id AS item_kind_id,
+    SUM(storage_transaction.amount) AS amount
+  FROM storage_transaction
+  WHERE storage_transaction.moment <= moment
+  GROUP BY 
+    storage_transaction.storage_id, 
+    storage_transaction.item_kind_id;
 $$ LANGUAGE SQL;
 
 CREATE FUNCTION storage_kind_balance (
