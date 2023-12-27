@@ -66,13 +66,14 @@ BEGIN
     FROM storage_transaction
     WHERE storage_transaction.moment > storage_transaction_validate.moment
       AND storage_transaction.storage_id = storage_transaction_validate.storage_id
+      AND storage_transaction.item_kind_id = storage_transaction_validate.item_kind_id
   LOOP
     balance := storage_balance_apply(balance, 
       transact.moment, transact.storage_id, 
-      transact.item_kind_id, transact.amount);
+      item_kind_id, transact.amount);
     capacity := storage_capacity_apply(capacity, 
       transact.moment, transact.storage_id, 
-      transact.item_kind_id, transact.amount);
+      item_kind_id, transact.amount);
   END LOOP;
 END;
 $$ LANGUAGE plpgsql;
