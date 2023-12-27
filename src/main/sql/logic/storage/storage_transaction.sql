@@ -25,10 +25,20 @@ CREATE VIEW storage_transaction_transfer_withdraw AS
   FROM transfer
   JOIN transfer_atom ON transfer_atom.transfer_id = transfer.id;
 
+CREATE VIEW storage_transaction_consume_withdraw AS
+  SELECT 
+    consume.moment             AS moment,
+    consume.source_id          AS storage_id,
+    consume_atom.item_kind_id  AS item_kind_id,
+    -consume_atom.amount       AS amount
+  FROM consume
+  JOIN consume_atom ON consume_atom.consume_id = consume.id;
+
 CREATE VIEW storage_transaction AS
   SELECT * 
   FROM (
     (SELECT * FROM storage_transaction_supply_income) UNION ALL 
     (SELECT * FROM storage_transaction_transfer_income) UNION ALL 
-    (SELECT * FROM storage_transaction_transfer_withdraw)
+    (SELECT * FROM storage_transaction_transfer_withdraw) UNION ALL 
+    (SELECT * FROM storage_transaction_consume_withdraw)
   );

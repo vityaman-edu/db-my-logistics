@@ -140,6 +140,10 @@ BEGIN
   -- Uncomment the next line to produce balance integrity error
   -- PERFORM consume_atom_create(consume_id, potatoe_id, 1000);
 
+  consume_id := consume_create(
+    omsk_storage_id, '2023-01-08 00:00'::timestamp);
+  PERFORM consume_atom_create(consume_id, rock_id, 788);
+
   RETURN;
 END
 $$ LANGUAGE plpgsql;
