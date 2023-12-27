@@ -30,30 +30,11 @@ BEGIN
   FROM transfer
   WHERE transfer.id = transfer_id;
 
-  source_balance  := 
-    storage_kind_balance(source_id, withdraw_moment, item_kind_id);
-  target_capacity := 
-    storage_kind_capacity_free(target_id, income_moment, item_kind_id);
+  PERFORM storage_transaction_validate(
+    withdraw_moment, source_id, item_kind_id, -amount);
 
-  IF source_balance < amount THEN
-    RAISE EXCEPTION
-      'can withdraw % units '
-      'of type with id % '
-      'from storage with id % '
-      'with balance % '
-      'on %'
-    , amount, item_kind_id, source_id, source_balance, withdraw_moment;
-  END IF;
-
-  IF target_capacity < amount THEN
-    RAISE EXCEPTION
-      'can income % units '
-      'of type with id % '
-      'to storage with id % '
-      'with capacity % '
-      'on %'
-    , amount, item_kind_id, target_id, target_capacity, income_moment;
-  END IF;
+  PERFORM storage_transaction_validate(
+    income_moment, target_id, item_kind_id, amount);
 
   RETURN NEW;
 END;

@@ -23,18 +23,8 @@ BEGIN
   FROM supply
   WHERE supply.id = supply_id;
 
-  target_capacity := 
-    storage_kind_capacity_free(target_id, income_moment, item_kind_id);
-
-  IF target_capacity < amount THEN
-    RAISE EXCEPTION
-      'can income % units '
-      'of type with id % '
-      'to storage with id % '
-      'with capacity % '
-      'on %'
-    , amount, item_kind_id, target_id, target_capacity, income_moment;
-  END IF;
+  PERFORM storage_transaction_validate(
+    income_moment, target_id, item_kind_id, amount);
 
   RETURN NEW;
 END;

@@ -27,13 +27,19 @@ FROM ((
   ))
 ORDER BY withdraw NULLS FIRST, income;
 
+SELECT 
+  storage_transaction.moment AS moment,
+  storage.name               AS storage,
+  item_kind.name             AS item,
+  storage_transaction.amount AS amount
+FROM storage_transaction
+JOIN storage ON storage.id = storage_transaction.storage_id
+JOIN item_kind ON item_kind.id = storage_transaction.item_kind_id
+ORDER BY storage_transaction.moment, storage.name, item_kind.name;
+
 CREATE FUNCTION max_moment() RETURNS timestamp AS $$
   SELECT MAX(moment) 
-  FROM (
-    SELECT MAX(transfer.withdraw_moment + transfer.duration) AS moment FROM transfer
-  ) UNION ALL (
-    SELECT MAX(supply.moment) AS moment FROM supply
-  )
+  FROM storage_transaction;
 $$ LANGUAGE SQL;
 
 SELECT storage.name, item_kind.name, amount
