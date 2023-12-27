@@ -47,7 +47,7 @@ BEGIN
   FOR i IN 1..1000 LOOP
     current := current + '1 minute'::interval;
     transfer_id := transfer_create(
-      a_id, b_id, current, '1 minute'::interval, tester_id);
+      a_id, b_id, current, current + '1 minute'::interval, tester_id);
     PERFORM transfer_atom_create(transfer_id, dollar_id, 1);  
     PERFORM transfer_atom_create(transfer_id, ruble_id, 1);  
     PERFORM transfer_approve(transfer_id, tester_id);
@@ -58,7 +58,7 @@ BEGIN
   FOR i IN 1..1000 LOOP
     current := current + '1 minute'::interval;
     transfer_id := transfer_create(
-      b_id, a_id, current, '1 minute'::interval, tester_id);
+      b_id, a_id, current, current + '1 minute'::interval, tester_id);
     PERFORM transfer_atom_create(transfer_id, dollar_id, 1);  
     PERFORM transfer_atom_create(transfer_id, ruble_id, 1);  
     PERFORM transfer_approve(transfer_id, tester_id);

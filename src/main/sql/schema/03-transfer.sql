@@ -5,7 +5,7 @@ CREATE TABLE transfer (
   target_id       integer   NOT NULL REFERENCES storage(id),
 
   withdraw_moment timestamp NOT NULL,
-  duration        interval  NOT NULL,
+  income_moment   timestamp NOT NULL,
 
   initiator_id        integer   NOT NULL REFERENCES manager(id),
   source_approver_id  integer   REFERENCES admin(id),
@@ -13,12 +13,24 @@ CREATE TABLE transfer (
 
   creation_moment timestamp NOT NULL DEFAULT current_timestamp,
 
-  CONSTRAINT transfer_is_not_loop CHECK (source_id != target_id)
+  CONSTRAINT transfer_is_not_loop 
+  CHECK (source_id != target_id),
+
+  CONSTRAINT transfer_withdraw_before_income
+  CHECK (withdraw_moment <= income_moment)
 );
 
 CREATE INDEX transfer_moment_idx 
 ON transfer
-USING btree(withdraw_moment);
+USING btree(withdraw_moment)
+WHERE source_approver_id IS NOT NULL 
+  AND target_approver_id IS NOT NULL;
+
+CREATE INDEX transfer_moment_idx 
+ON transfer
+USING btree(income_moment)
+WHERE source_approver_id IS NOT NULL 
+  AND target_approver_id IS NOT NULL;
 
 CREATE TABLE transfer_atom (
   id                  serial        PRIMARY KEY,

@@ -16,7 +16,7 @@ DECLARE
   income_moment   timestamp;
 BEGIN
   withdraw_moment := transfer.withdraw_moment;
-  income_moment   := transfer.withdraw_moment + transfer.duration;
+  income_moment   := transfer.income_moment;
   
   FOR atom IN
     SELECT *

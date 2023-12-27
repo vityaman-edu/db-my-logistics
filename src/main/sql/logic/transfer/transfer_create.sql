@@ -2,7 +2,7 @@ CREATE FUNCTION transfer_create(
   source_id       integer,
   target_id       integer,
   withdraw_moment timestamp,
-  duration        interval,
+  income_moment   timestamp,
   initiator_id    integer
 ) RETURNS integer AS $$
 DECLARE 
@@ -17,13 +17,13 @@ BEGIN
     source_id, 
     target_id,
     withdraw_moment,
-    duration,
+    income_moment,
     initiator_id
   ) VALUES (
     source_id, 
     target_id,
     withdraw_moment,
-    duration,
+    income_moment,
     manager_id
   ) RETURNING id INTO STRICT transfer_id;
   
