@@ -1,66 +1,67 @@
-DROP FUNCTION IF EXISTS remove_all();
+DROP DOMAIN IF EXISTS positive_int CASCADE;
+DROP DOMAIN IF EXISTS nickname CASCADE;
+DROP DOMAIN IF EXISTS person_name CASCADE;
+DROP DOMAIN IF EXISTS location_name CASCADE;
+DROP DOMAIN IF EXISTS storage_name CASCADE;
+DROP DOMAIN IF EXISTS item_kind_name CASCADE;
+DROP DOMAIN IF EXISTS item_kind_unit CASCADE;
 
-CREATE FUNCTION remove_all() RETURNS void AS $$
-DECLARE
-    rec RECORD;
-    cmd text;
-BEGIN
-    cmd := '';
+DROP TABLE IF EXISTS item_kind CASCADE;
+DROP TABLE IF EXISTS location CASCADE;
+DROP TABLE IF EXISTS storage CASCADE;
+DROP TABLE IF EXISTS storage_cell CASCADE;
+DROP TABLE IF EXISTS users CASCADE;
+DROP TABLE IF EXISTS manager CASCADE;
+DROP TABLE IF EXISTS admin CASCADE;
+DROP TABLE IF EXISTS transfer CASCADE;
+DROP TABLE IF EXISTS transfer_atom CASCADE;
+DROP TABLE IF EXISTS supply CASCADE;
+DROP TABLE IF EXISTS supply_atom CASCADE;
+DROP TABLE IF EXISTS consume CASCADE;
+DROP TABLE IF EXISTS consume_atom CASCADE;
 
-    FOR rec IN SELECT
-            'DROP SEQUENCE ' || quote_ident(n.nspname) || '.'
-                || quote_ident(c.relname) || ' CASCADE;' AS name
-        FROM
-            pg_catalog.pg_class AS c
-        LEFT JOIN
-            pg_catalog.pg_namespace AS n
-        ON
-            n.oid = c.relnamespace
-        WHERE
-            relkind = 'S' AND
-            n.nspname NOT IN ('pg_catalog', 'pg_toast') AND
-            pg_catalog.pg_table_is_visible(c.oid)
-    LOOP
-        cmd := cmd || rec.name;
-    END LOOP;
+DROP FUNCTION IF EXISTS consume_atom_create CASCADE;
+DROP FUNCTION IF EXISTS consume_create CASCADE;
+DROP FUNCTION IF EXISTS consume_integrity_check CASCADE;
+DROP TRIGGER IF EXISTS consume_integrity_check CASCADE;
 
-    FOR rec IN SELECT
-            'DROP TABLE ' || quote_ident(n.nspname) || '.'
-                || quote_ident(c.relname) || ' CASCADE;' AS name
-        FROM
-            pg_catalog.pg_class AS c
-        LEFT JOIN
-            pg_catalog.pg_namespace AS n
-        ON
-            n.oid = c.relnamespace WHERE relkind = 'r' AND
-            n.nspname NOT IN ('pg_catalog', 'pg_toast') AND
-            pg_catalog.pg_table_is_visible(c.oid)
-    LOOP
-        cmd := cmd || rec.name;
-    END LOOP;
+DROP FUNCTION IF EXISTS item_kind_create CASCADE;
 
-    FOR rec IN SELECT
-            'DROP FUNCTION ' || quote_ident(ns.nspname) || '.'
-                || quote_ident(proname) || '(' || oidvectortypes(proargtypes)
-                || ');' AS name
-        FROM
-            pg_proc
-        INNER JOIN
-            pg_namespace ns
-        ON
-            (pg_proc.pronamespace = ns.oid)
-        WHERE
-            ns.nspname =
-            'public'
-        ORDER BY
-            proname
-    LOOP
-        cmd := cmd || rec.name;
-    END LOOP;
+DROP FUNCTION IF EXISTS admin_assign CASCADE;
+DROP FUNCTION IF EXISTS manager_assign CASCADE;
+DROP FUNCTION IF EXISTS user_create CASCADE;
 
-    EXECUTE cmd;
-    RETURN;
-END;
-$$ LANGUAGE plpgsql;
+DROP FUNCTION IF EXISTS location_create CASCADE;
+DROP FUNCTION IF EXISTS storage_balance CASCADE;
+DROP FUNCTION IF EXISTS storage_kind_balance CASCADE;
+DROP VIEW IF EXISTS storage_capacity_total CASCADE;
+DROP FUNCTION IF EXISTS storage_capacity_occupied CASCADE;
+DROP FUNCTION IF EXISTS storage_capacity_free CASCADE;
+DROP FUNCTION IF EXISTS storage_kind_capacity_free CASCADE;
+DROP FUNCTION IF EXISTS storage_cell_create CASCADE;
+DROP FUNCTION IF EXISTS storage_create CASCADE;
+DROP FUNCTION IF EXISTS storage_balance_apply CASCADE;
+DROP FUNCTION IF EXISTS storage_capacity_apply CASCADE;
+DROP FUNCTION IF EXISTS storage_transaction_validate CASCADE;
+DROP FUNCTION IF EXISTS transfer_is_commited CASCADE;
+DROP VIEW IF EXISTS storage_transaction_supply_income CASCADE;
+DROP VIEW IF EXISTS storage_transaction_transfer_income CASCADE;
+DROP VIEW IF EXISTS storage_transaction_transfer_withdraw CASCADE;
+DROP VIEW IF EXISTS storage_transaction_consume_withdraw CASCADE;
+DROP VIEW IF EXISTS storage_transaction CASCADE;
 
-SELECT remove_all();
+DROP FUNCTION IF EXISTS supply_atom_create CASCADE;
+DROP FUNCTION IF EXISTS supply_create CASCADE;
+DROP FUNCTION IF EXISTS supply_integrity_check CASCADE;
+DROP TRIGGER IF EXISTS supply_integrity_check CASCADE;
+
+DROP FUNCTION IF EXISTS transfer_reset_votes CASCADE;
+DROP FUNCTION IF EXISTS transfer_validate CASCADE;
+DROP FUNCTION IF EXISTS transfer_approve CASCADE;
+DROP FUNCTION IF EXISTS transfer_atom_create CASCADE;
+DROP FUNCTION IF EXISTS transfer_create CASCADE;
+DROP FUNCTION IF EXISTS transfer_integrity_check CASCADE;
+DROP TRIGGER IF EXISTS transfer_integrity_check CASCADE;
+
+DROP FUNCTION IF EXISTS max_moment CASCADE;
+DROP FUNCTION IF EXISTS fill CASCADE;
