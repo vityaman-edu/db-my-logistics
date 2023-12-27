@@ -26,7 +26,7 @@ FROM ((
     JOIN supply_atom ON supply_atom.supply_id = supply.id
     JOIN item_kind ON supply_atom.item_kind_id = item_kind.id
     AS t2
-  ))
+  )) AS tt
 ORDER BY withdraw NULLS FIRST, income;
 
 SELECT 
