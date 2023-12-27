@@ -21,7 +21,7 @@ BEGIN
     transfer.source_id, 
     transfer.target_id,
     transfer.withdraw_moment,
-    transfer.withdraw_moment + transfer.duration
+    transfer.income_moment
   INTO 
     source_id, 
     target_id, 

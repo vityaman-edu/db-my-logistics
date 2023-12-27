@@ -1,12 +1,12 @@
 SELECT withdraw, income, source, target, item, amount
 FROM ((
     SELECT 
-      transfer.withdraw_moment                     AS withdraw, 
-      transfer.withdraw_moment + transfer.duration AS income, 
-      source.name                                  AS source,
-      target.name                                  AS target,
-      item_kind.name                               AS item, 
-      amount                                       AS amount
+      transfer.withdraw_moment AS withdraw, 
+      transfer.income_moment   AS income, 
+      source.name              AS source,
+      target.name              AS target,
+      item_kind.name           AS item, 
+      amount                   AS amount
     FROM transfer
     JOIN storage AS source ON source.id = transfer.source_id
     JOIN storage AS target ON target.id = transfer.target_id

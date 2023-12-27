@@ -17,10 +17,10 @@ CREATE VIEW storage_transaction_supply_income AS
 
 CREATE VIEW storage_transaction_transfer_income AS
   SELECT 
-    transfer.withdraw_moment + transfer.duration AS moment,
-    transfer.target_id                           AS storage_id, 
-    transfer_atom.item_kind_id                   AS item_kind_id, 
-    transfer_atom.amount                         AS amount
+    transfer.income_moment     AS moment,
+    transfer.target_id         AS storage_id, 
+    transfer_atom.item_kind_id AS item_kind_id, 
+    transfer_atom.amount       AS amount
   FROM transfer
   JOIN transfer_atom ON transfer_atom.transfer_id = transfer.id
   WHERE transfer_is_commited(transfer);

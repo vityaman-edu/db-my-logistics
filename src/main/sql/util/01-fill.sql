@@ -72,7 +72,8 @@ BEGIN
 
   transfer_id := transfer_create(
     moscow_storage_id, x5_storage_id,
-    '2023-01-04 00:00'::timestamp, '1 hour'::interval,
+    '2023-01-04 00:00'::timestamp, 
+    '2023-01-04 00:00'::timestamp + '1 hour'::interval,
     margo_id);
   PERFORM transfer_atom_create(transfer_id, milk_id, 400);
   PERFORM transfer_atom_create(transfer_id, rock_id, 1000);
@@ -81,7 +82,8 @@ BEGIN
 
   transfer_id := transfer_create(
     x5_storage_id, moscow_storage_id,
-    '2023-01-04 00:00'::timestamp, '1 hour'::interval,
+    '2023-01-04 00:00'::timestamp, 
+    '2023-01-04 00:00'::timestamp + '1 hour'::interval,
     margo_id);
   PERFORM transfer_atom_create(transfer_id, potatoe_id, 100);
   PERFORM transfer_atom_create(transfer_id, rock_id, 888);
@@ -90,7 +92,8 @@ BEGIN
 
   transfer_id := transfer_create(
     omsk_storage_id, x5_storage_id,
-    '2023-01-06 00:00'::timestamp, '1 hour'::interval,
+    '2023-01-06 00:00'::timestamp,
+    '2023-01-06 00:00'::timestamp + '1 hour'::interval,
     margo_id);
   PERFORM transfer_atom_create(transfer_id, milk_id, 30);
   -- Uncomment the next line to produce balance integrity error
@@ -103,7 +106,8 @@ BEGIN
   -- Roundtrip check
   transfer_id := transfer_create(
     x5_storage_id, omsk_storage_id,
-    '2023-01-06 01:00'::timestamp, '1 hour'::interval,
+    '2023-01-06 01:00'::timestamp, 
+    '2023-01-06 01:00'::timestamp + '1 hour'::interval,
     margo_id);
   PERFORM transfer_atom_create(transfer_id, milk_id, 30);
   PERFORM transfer_atom_create(transfer_id, rock_id, 111);
@@ -111,7 +115,8 @@ BEGIN
 
   transfer_id := transfer_create(
     omsk_storage_id, x5_storage_id,
-    '2023-01-06 02:00'::timestamp, '1 hour'::interval,
+    '2023-01-06 02:00'::timestamp, 
+    '2023-01-06 02:00'::timestamp + '1 hour'::interval,
     margo_id);
   PERFORM transfer_atom_create(transfer_id, milk_id, 30);
   PERFORM transfer_atom_create(transfer_id, rock_id, 111);
@@ -119,7 +124,8 @@ BEGIN
 
   transfer_id := transfer_create(
     x5_storage_id, omsk_storage_id,
-    '2023-01-06 03:00'::timestamp, '1 hour'::interval,
+    '2023-01-06 03:00'::timestamp, 
+    '2023-01-06 03:00'::timestamp + '1 hour'::interval,
     margo_id);
   PERFORM transfer_atom_create(transfer_id, milk_id, 30);
   PERFORM transfer_atom_create(transfer_id, rock_id, 111);
@@ -127,7 +133,8 @@ BEGIN
 
   transfer_id := transfer_create(
     omsk_storage_id, x5_storage_id,
-    '2023-01-06 04:00'::timestamp, '1 hour'::interval,
+    '2023-01-06 04:00'::timestamp, 
+    '2023-01-06 04:00'::timestamp + '1 hour'::interval,
     margo_id);
   PERFORM transfer_atom_create(transfer_id, milk_id, 30);
   PERFORM transfer_atom_create(transfer_id, rock_id, 111);
@@ -159,7 +166,8 @@ BEGIN
   -- Test uncommited transfers
   transfer_id := transfer_create(
     moscow_storage_id, x5_storage_id,
-    '2023-01-08 00:00'::timestamp, '1 hour'::interval,
+    '2023-01-08 00:00'::timestamp, 
+    '2023-01-08 00:00'::timestamp + '1 hour'::interval,
     margo_id);
   PERFORM transfer_atom_create(transfer_id, milk_id, 155);
 
