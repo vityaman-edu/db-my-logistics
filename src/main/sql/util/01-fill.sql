@@ -149,6 +149,13 @@ BEGIN
     omsk_storage_id, '2023-01-07 00:00'::timestamp);
   PERFORM consume_atom_create(consume_id, rock_id, 788);
 
+  supply_id := supply_create(moscow_storage_id, '2023-01-07 00:00'::timestamp);
+  PERFORM supply_atom_create(supply_id, potatoe_id, 100);
+
+  -- Uncomment the next line to produce capacity integrity error
+  -- supply_id := supply_create(moscow_storage_id, '2023-01-06 00:00'::timestamp);
+  -- PERFORM supply_atom_create(supply_id, potatoe_id, 100);
+
   RETURN;
 END
 $$ LANGUAGE plpgsql;
