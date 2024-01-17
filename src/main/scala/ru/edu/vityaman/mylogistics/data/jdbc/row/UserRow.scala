@@ -1,10 +1,10 @@
-package ru.edu.vityaman.mylogistics.data.jdbc.entity
-
-import ru.edu.vityaman.mylogistics.model.User
+package ru.edu.vityaman.mylogistics.data.jdbc.row
 
 import java.sql.Timestamp
 
-case class UserEntity(
+import ru.edu.vityaman.mylogistics.logic.model.User
+
+case class UserRow(
     id: Int,
     nickname: String,
     firstName: String,

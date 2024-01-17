@@ -1,7 +1,7 @@
 package ru.edu.vityaman.mylogistics.api.http
 
-import zio.http._
 import zio._
+import zio.http._
 
 class MonitoringApi {
   def routes: Routes[Any, Nothing] = Routes(
