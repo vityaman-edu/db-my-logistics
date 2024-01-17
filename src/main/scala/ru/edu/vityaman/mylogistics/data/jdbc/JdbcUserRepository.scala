@@ -1,15 +1,17 @@
 package ru.edu.vityaman.mylogistics.data.jdbc
 
-import doobie.Transactor
-import doobie.implicits._
-import doobie.refined.implicits._
-import doobie.implicits.javasql._
-import doobie.implicits.javatimedrivernative._
-import ru.edu.vityaman.mylogistics.data.UserRepository
-import ru.edu.vityaman.mylogistics.data.jdbc.entity.UserEntity
-import ru.edu.vityaman.mylogistics.model.User
 import zio.interop.catz._
 import zio.{RLayer, Task, ZLayer}
+
+import doobie.Transactor
+import doobie.implicits._
+import doobie.implicits.javasql._
+import doobie.implicits.javatimedrivernative._
+import doobie.refined.implicits._
+
+import ru.edu.vityaman.mylogistics.data.UserRepository
+import ru.edu.vityaman.mylogistics.data.jdbc.row.UserRow
+import ru.edu.vityaman.mylogistics.logic.model.User
 
 private class JdbcUserRepository(xa: Transactor[Task]) extends UserRepository {
   override def register(user: User.Draft): Task[User.Id] =
@@ -30,7 +32,7 @@ private class JdbcUserRepository(xa: Transactor[Task]) extends UserRepository {
       creation_moment
     FROM users WHERE users.id = $id
     """
-      .query[UserEntity]
+      .query[UserRow]
       .unique
       .transact(xa)
       .map(_.asModel)
@@ -45,7 +47,7 @@ private class JdbcUserRepository(xa: Transactor[Task]) extends UserRepository {
       creation_moment
     FROM users
     """
-      .query[UserEntity]
+      .query[UserRow]
       .stream
       .transact(xa)
       .compile

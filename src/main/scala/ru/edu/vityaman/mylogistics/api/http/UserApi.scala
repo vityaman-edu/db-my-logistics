@@ -1,32 +1,27 @@
 package ru.edu.vityaman.mylogistics.api.http
 
-import ru.edu.vityaman.mylogistics.data.UserRepository
-import ru.edu.vityaman.mylogistics.model.User.decoder
-import ru.edu.vityaman.mylogistics.model.User.encoder
+import zio._
 import zio.http._
 import zio.json._
-import zio._
 
-class UserApi(repository: UserRepository) {
+import ru.edu.vityaman.mylogistics.api.http.view.UserView
+import ru.edu.vityaman.mylogistics.api.http.view.UserView.encoder
+import ru.edu.vityaman.mylogistics.logic.service.UserService
+
+class UserApi(service: UserService) {
   def routes: Routes[Any, Response] = Routes(
-    Method.POST / "api" / "user" ->
-      handler(ZIO.succeed(Response.text("user"))),
     Method.GET / "api" / "user" ->
       handler(
-        repository
+        service
           .getAll()
-          .tapError(error => ZIO.succeed(error.printStackTrace()))
+          .map(_.map(UserView.fromModel))
           .map(_.toJsonPretty)
-          .mapBoth(
-            _ => Response.error(Status.InternalServerError),
-            Response.json(_)
-          )
-          .tap(_ => ZIO.log("GET /api/user"))
+          .mapBoth(Response.fromThrowable, Response.json)
       )
   )
 }
 
 object UserApi {
-  val layer: RLayer[UserRepository, UserApi] =
+  val layer: RLayer[UserService, UserApi] =
     ZLayer.fromFunction(new UserApi(_))
 }
