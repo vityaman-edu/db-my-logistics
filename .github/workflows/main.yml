@@ -25,7 +25,7 @@ jobs:
       with:
         java-version: '21'
         distribution: 'temurin'
-        cache: 'sbt'
+        cache: 'sbt scalafmt'
 
     - name: Run formatting
       run: scalafmt --test
