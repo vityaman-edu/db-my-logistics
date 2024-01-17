@@ -4,10 +4,10 @@ import zio._
 import zio.http.{HttpApp, Routes}
 
 object HttpApi {
-  val layer: RLayer[UserApi & ObservabilityApi, HttpApp[Any]] = ZLayer.fromZIO {
+  val layer: RLayer[UserApi & MonitoringApi, HttpApp[Any]] = ZLayer.fromZIO {
     for {
       _ <- ZIO.log("Wiring HTTP API...")
-      observability <- ZIO.service[ObservabilityApi]
+      observability <- ZIO.service[MonitoringApi]
       user <- ZIO.service[UserApi]
       app = (
         Routes.empty
