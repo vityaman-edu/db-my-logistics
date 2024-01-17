@@ -1,6 +1,6 @@
 package ru.edu.vityaman.mylogistics
 
-import ru.edu.vityaman.mylogistics.api.http.{HttpApi, ObservabilityApi, UserApi}
+import ru.edu.vityaman.mylogistics.api.http.{HttpApi, MonitoringApi, UserApi}
 import ru.edu.vityaman.mylogistics.data.jdbc.{
   JdbcUserRepository,
   PostgresTransactor
@@ -26,7 +26,7 @@ object MyLogistics extends ZIOAppDefault {
         Configuration.layer,
         PostgresTransactor.layer,
         JdbcUserRepository.layer,
-        ObservabilityApi.layer,
+        MonitoringApi.layer,
         UserApi.layer,
         HttpApi.layer
       )
