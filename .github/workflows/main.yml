@@ -25,8 +25,8 @@ jobs:
       with:
         java-version: openjdk
 
-    - name: Run formatting
-      run: scalafmt --test
+    - name: Run formatter
+      uses: openlawteam/scalafmt-ci@v2
 
     - name: Run unit tests
       run: sbt test
