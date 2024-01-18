@@ -1,6 +1,6 @@
 inThisBuild(
   List(
-    // For ScalaFix
+    // ScalaFix
     semanticdbEnabled := true,
     semanticdbVersion := scalafixSemanticdb.revision,
     scalafixScalaBinaryVersion := "2.13"
@@ -10,11 +10,12 @@ inThisBuild(
 lazy val root = project
   .in(file("."))
   .settings(
-    name := "My Logistics",
+    // Project info
+    name := "MyLogistics",
     version := "0.0.1",
     scalaVersion := "2.13.12",
 
-    //
+    // Compiler options
     scalacOptions += "-Ywarn-unused:imports",
 
     // Dependencies

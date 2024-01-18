@@ -1,4 +1,4 @@
-package ru.edu.vityaman.mylogistics
+package ru.vityaman.mylogistics
 
 import zio.{ULayer, ZLayer}
 

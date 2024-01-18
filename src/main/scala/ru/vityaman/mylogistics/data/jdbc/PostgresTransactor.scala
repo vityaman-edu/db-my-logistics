@@ -1,4 +1,4 @@
-package ru.edu.vityaman.mylogistics.data.jdbc
+package ru.vityaman.mylogistics.data.jdbc
 
 import zio._
 import zio.interop.catz._
@@ -8,7 +8,7 @@ import scala.concurrent.ExecutionContext
 
 import doobie.hikari.HikariTransactor
 
-import ru.edu.vityaman.mylogistics.Configuration
+import ru.vityaman.mylogistics.Configuration
 
 object PostgresTransactor {
   val layer: URLayer[Scope with Configuration, HikariTransactor[Task]] =

@@ -1,4 +1,4 @@
-package ru.edu.vityaman.mylogistics.api.http.view
+package ru.vityaman.mylogistics.api.http.view
 
 import zio.json.DeriveJsonDecoder
 import zio.json.DeriveJsonEncoder
@@ -7,7 +7,7 @@ import zio.json.JsonEncoder
 
 import java.time.Instant
 
-import ru.edu.vityaman.mylogistics.logic.model.User
+import ru.vityaman.mylogistics.logic.model.User
 
 case class UserView(
     id: Int,

@@ -1,12 +1,12 @@
-package ru.edu.vityaman.mylogistics.logic.service.basic
+package ru.vityaman.mylogistics.logic.service.basic
 
 import zio.RLayer
 import zio.Task
 import zio.ZLayer
 
-import ru.edu.vityaman.mylogistics.data.UserRepository
-import ru.edu.vityaman.mylogistics.logic.model.User
-import ru.edu.vityaman.mylogistics.logic.service.UserService
+import ru.vityaman.mylogistics.data.UserRepository
+import ru.vityaman.mylogistics.logic.model.User
+import ru.vityaman.mylogistics.logic.service.UserService
 
 class BasicUserService(repository: UserRepository) extends UserService {
   override def register(user: User.Draft): Task[User.Id] =

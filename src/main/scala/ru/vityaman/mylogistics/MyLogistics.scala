@@ -1,15 +1,15 @@
-package ru.edu.vityaman.mylogistics
+package ru.vityaman.mylogistics
 
 import zio._
 import zio.http.{HttpApp, Server}
 import zio.logging.backend.SLF4J
 
-import ru.edu.vityaman.mylogistics.api.http.{HttpApi, MonitoringApi, UserApi}
-import ru.edu.vityaman.mylogistics.data.jdbc.{
+import ru.vityaman.mylogistics.api.http.{HttpApi, MonitoringApi, UserApi}
+import ru.vityaman.mylogistics.data.jdbc.{
   JdbcUserRepository,
   PostgresTransactor
 }
-import ru.edu.vityaman.mylogistics.logic.service.basic.BasicUserService
+import ru.vityaman.mylogistics.logic.service.basic.BasicUserService
 
 object MyLogistics extends ZIOAppDefault {
   override def run: RIO[ZIOAppArgs & Scope, Nothing] = (for {

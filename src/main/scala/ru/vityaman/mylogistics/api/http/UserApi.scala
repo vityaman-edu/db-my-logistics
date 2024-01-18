@@ -1,12 +1,12 @@
-package ru.edu.vityaman.mylogistics.api.http
+package ru.vityaman.mylogistics.api.http
 
 import zio._
 import zio.http._
 import zio.json._
 
-import ru.edu.vityaman.mylogistics.api.http.view.UserView
-import ru.edu.vityaman.mylogistics.api.http.view.UserView.encoder
-import ru.edu.vityaman.mylogistics.logic.service.UserService
+import ru.vityaman.mylogistics.api.http.view.UserView
+import ru.vityaman.mylogistics.api.http.view.UserView.encoder
+import ru.vityaman.mylogistics.logic.service.UserService
 
 class UserApi(service: UserService) {
   def routes: Routes[Any, Response] = Routes(

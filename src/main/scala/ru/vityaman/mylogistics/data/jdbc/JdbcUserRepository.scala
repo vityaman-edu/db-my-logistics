@@ -1,4 +1,4 @@
-package ru.edu.vityaman.mylogistics.data.jdbc
+package ru.vityaman.mylogistics.data.jdbc
 
 import zio.interop.catz._
 import zio.{RLayer, Task, ZLayer}
@@ -8,9 +8,9 @@ import doobie.implicits._
 import doobie.implicits.javasql._
 import doobie.refined.implicits._
 
-import ru.edu.vityaman.mylogistics.data.UserRepository
-import ru.edu.vityaman.mylogistics.data.jdbc.row.UserRow
-import ru.edu.vityaman.mylogistics.logic.model.User
+import ru.vityaman.mylogistics.data.UserRepository
+import ru.vityaman.mylogistics.data.jdbc.row.UserRow
+import ru.vityaman.mylogistics.logic.model.User
 
 private class JdbcUserRepository(xa: Transactor[Task]) extends UserRepository {
   override def register(user: User.Draft): Task[User.Id] =

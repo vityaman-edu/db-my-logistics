@@ -1,4 +1,4 @@
-package ru.edu.vityaman.mylogistics.api.http
+package ru.vityaman.mylogistics.api.http
 
 import zio._
 import zio.http.{HttpApp, Routes}

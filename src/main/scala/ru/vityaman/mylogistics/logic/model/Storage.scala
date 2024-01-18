@@ -1,4 +1,4 @@
-package ru.edu.vityaman.mylogistics.logic.model
+package ru.vityaman.mylogistics.logic.model
 
 final case class Storage(
     id: Storage.Id,
