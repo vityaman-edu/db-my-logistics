@@ -18,7 +18,7 @@ object Configuration {
     Configuration(database =
       Database(
         driver = "org.postgresql.Driver",
-        url = "jdbc:postgresql://localhost:5432/postgres",
+        url = "jdbc:postgresql://database:5432/postgres",
         user = "postgres",
         password = "postgres"
       )

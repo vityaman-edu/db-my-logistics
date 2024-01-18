@@ -1,25 +1,20 @@
 set -o errexit
 cd $(dirname -- "$0")
-cd ../..
 
 print() {
-    YC="\033[1;34m" # Yes Color
-    NC="\033[0m"    # No Color
-    printf "$YC[test] $1$NC\n"
+  YC="\033[1;34m" # Yes Color
+  NC="\033[0m"    # No Color
+  printf "$YC[test] $1$NC\n"
 }
 
-DATABASE_HOST=$1
-DATABASE_NAME=$2
-DATABASE_USER=$3
-
 run() {
-    print "Running SQL script: $1..."
-    psql \
-        -h $DATABASE_HOST \
-        -p 5432 \
-        -d $DATABASE_NAME \
-        -U $DATABASE_USER \
-        -a -f src/main/sql/$1
+  print "Running SQL script: $1..."
+  psql \
+    -h localhost \
+    -p 5432 \
+    -d $POSTGRES_DB \
+    -U $POSTGRES_USER \
+    -a -f sql/$1
 }
 
 print "Creating the database..."

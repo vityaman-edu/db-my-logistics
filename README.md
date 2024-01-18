@@ -9,9 +9,5 @@ ITMO Databases Course Work
 sbt "Docker/stage"
 
 # Start infra: database & backend
-docker compose up
-
-# Initialize database
-docker exec -it my-logistics-database bash
-bash my-logistics/ci/db/test.sh localhost postgres postgres
+docker compose up --build --force-recreate
 ```
