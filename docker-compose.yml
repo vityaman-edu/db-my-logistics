@@ -17,7 +17,7 @@ services:
   backend:
     container_name: my-logistics-backend
     build:
-      context: ./target/docker/stage
+      context: ./backend/target/docker/stage
       dockerfile: Dockerfile
     restart: always
     ports:

@@ -1,11 +1,15 @@
 import com.typesafe.sbt.packager.docker.DockerApiVersion
 
-// Package app docker image
-enablePlugins(JavaAppPackaging)
-enablePlugins(DockerPlugin)
-
 inThisBuild(
-  List(
+  Seq(
+    // Project
+    organization := "ru.vityaman",
+    version := "0.0.1",
+
+    // Scala
+    scalaVersion := "2.13.12",
+    scalacOptions += "-Ywarn-unused:imports",
+
     // ScalaFix
     semanticdbEnabled := true,
     semanticdbVersion := scalafixSemanticdb.revision,
@@ -13,17 +17,15 @@ inThisBuild(
   )
 )
 
-lazy val root = project
-  .in(file("."))
+lazy val root = (project in file("."))
   .settings(
-    // Project info
-    name := "MyLogistics",
-    version := "0.0.1",
-    scalaVersion := "2.13.12",
+    name := "MyLogistics"
+  )
+  .aggregate(backend)
 
-    // Compiler options
-    scalacOptions += "-Ywarn-unused:imports",
-
+lazy val backend = (project in file("backend"))
+  .enablePlugins(JavaAppPackaging, DockerPlugin)
+  .settings(
     // Docker image settings
     dockerBaseImage := "openjdk:21",
     dockerExposedPorts ++= Seq(8080),
