@@ -77,5 +77,13 @@ lazy val frontend = (project in file("frontend"))
 
 addCommandAlias(
   "ensureQuality",
-  Seq("scalafmtCheck", "scalafix --check", "test", "Docker/stage").mkString(";")
+  Seq(
+    "backend/scalafmtCheck",
+    "frontend/scalafmtCheck",
+    "backend/scalafix --check",
+    "frontend/scalafix --check",
+    "backend/test",
+    "backend/Docker/stage",
+    "frontend/fastLinkJS"
+  ).mkString(";")
 )
