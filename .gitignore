@@ -9,7 +9,7 @@
 # *.pdf
 
 # VSCode
-out/^(spec)
+out/
 .vscode
 
 # macOS
