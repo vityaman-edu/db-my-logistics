@@ -63,3 +63,8 @@ lazy val backend = (project in file("backend"))
       "ch.qos.logback" % "logback-classic" % "1.4.12" % Runtime
     )
   )
+
+addCommandAlias(
+  "ensureQuality",
+  Seq("scalafmtCheck", "scalafix --check", "test", "Docker/stage").mkString(";")
+)

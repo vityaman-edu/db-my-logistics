@@ -25,14 +25,6 @@ jobs:
       with:
         java-version: openjdk
 
-    - name: Run scalafmt
-      run: sbt "scalafmtCheck"
+    - name: Run ensureQuality task
+      run: sbt ensureQuality
 
-    - name: Run scalafix
-      run: sbt "scalafix --check"
-
-    - name: Run Unit tests
-      run: sbt test
-    
-    - name: Package backend Docker image
-      run: sbt "Docker/stage"
