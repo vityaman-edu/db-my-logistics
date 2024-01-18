@@ -25,6 +25,11 @@ jobs:
       with:
         java-version: openjdk
 
-    - name: Run unit tests
+    - name: Run scalafmt
+      run: sbt "scalafmtCheck"
+
+    - name: Run scalafix
+      run: sbt "scalafix --check"
+
+    - name: Run Unit tests
       run: sbt test
-    

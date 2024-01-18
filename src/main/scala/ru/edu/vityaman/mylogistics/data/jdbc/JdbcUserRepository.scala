@@ -6,7 +6,6 @@ import zio.{RLayer, Task, ZLayer}
 import doobie.Transactor
 import doobie.implicits._
 import doobie.implicits.javasql._
-import doobie.implicits.javatimedrivernative._
 import doobie.refined.implicits._
 
 import ru.edu.vityaman.mylogistics.data.UserRepository

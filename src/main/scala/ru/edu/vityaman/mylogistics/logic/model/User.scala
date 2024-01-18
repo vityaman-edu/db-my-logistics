@@ -1,10 +1,8 @@
 package ru.edu.vityaman.mylogistics.logic.model
 
-import zio.json._
-
 import java.time.Instant
 
-case class User(
+final case class User(
     id: User.Id,
     nickname: User.Nickname,
     firstName: User.PersonName,
