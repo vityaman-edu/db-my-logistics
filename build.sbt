@@ -1,3 +1,9 @@
+import com.typesafe.sbt.packager.docker.DockerApiVersion
+
+// Package app docker image
+enablePlugins(JavaAppPackaging)
+enablePlugins(DockerPlugin)
+
 inThisBuild(
   List(
     // ScalaFix
@@ -17,6 +23,11 @@ lazy val root = project
 
     // Compiler options
     scalacOptions += "-Ywarn-unused:imports",
+
+    // Docker image settings
+    dockerBaseImage := "openjdk:21",
+    dockerExposedPorts ++= Seq(8080),
+    dockerApiVersion := Some(DockerApiVersion(3, 8)),
 
     // Dependencies
     libraryDependencies ++= Seq(

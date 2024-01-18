@@ -4,11 +4,14 @@ ITMO Databases Course Work
 
 ## Build & Run
 
-### Database
-
 ```bash
+# Build the backend app docker image
+sbt "Docker/stage"
+
+# Start infra: database & backend
 docker compose up
-docker exec -it db-my-logistics-db-1 
+
+# Initialize database
+docker exec -it my-logistics-database bash
 bash my-logistics/ci/db/test.sh localhost postgres postgres
-docker compose rm db
 ```

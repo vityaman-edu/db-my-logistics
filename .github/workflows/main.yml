@@ -33,3 +33,6 @@ jobs:
 
     - name: Run Unit tests
       run: sbt test
+    
+    - name: Package backend Docker image
+      run: sbt "Docker/stage"

@@ -1,6 +1,7 @@
 version: '3.8'
 services:
-  db:
+  database:
+    container_name: my-logistics-database
     image: postgres
     restart: always
     ports:
@@ -11,3 +12,19 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: postgres
+    networks:
+      - my-logistics-common
+  backend:
+    container_name: my-logistics-backend
+    build:
+      context: ./target/docker/stage
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "8080:8080"
+    networks:
+      - my-logistics-common
+networks:
+  my-logistics-common:
+    name: my-logistics-common
+    driver: bridge
