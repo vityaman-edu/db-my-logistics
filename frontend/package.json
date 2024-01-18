@@ -1,0 +1,11 @@
+{
+  "name": "my-logistics",
+  "private": true,
+  "version": "0.0.1",
+  "type": "module",
+  "dependencies": {
+    "jsdom": "^23.2.0",
+    "source-map-support": "^0.5.21"
+  },
+  "scripts": {}
+}

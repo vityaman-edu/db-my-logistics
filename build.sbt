@@ -64,6 +64,17 @@ lazy val backend = (project in file("backend"))
     )
   )
 
+lazy val frontend = (project in file("frontend"))
+  .enablePlugins(ScalaJSPlugin)
+  .settings(
+    scalaJSUseMainModuleInitializer := true,
+    jsEnv := new org.scalajs.jsenv.jsdomnodejs.JSDOMNodeJSEnv(),
+    libraryDependencies ++= Seq(
+      "com.raquo" %%% "laminar" % "16.0.0",
+      "org.scala-js" %%% "scalajs-dom" % "2.4.0"
+    )
+  )
+
 addCommandAlias(
   "ensureQuality",
   Seq("scalafmtCheck", "scalafix --check", "test", "Docker/stage").mkString(";")

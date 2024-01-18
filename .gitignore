@@ -44,3 +44,7 @@ metals.sbt
 .idea
 .idea_modules
 /.worksheet/
+
+# Node
+node_modules
+package-lock.json
