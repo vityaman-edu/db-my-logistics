@@ -14,4 +14,10 @@ object Storage {
       id: Storage.Id,
       name: Storage.Name
   )
+
+  final case class Detailed(
+      id: Storage.Id,
+      name: Storage.Name,
+      location: Location
+  )
 }
