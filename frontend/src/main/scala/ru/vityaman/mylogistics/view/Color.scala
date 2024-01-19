@@ -1,7 +1,7 @@
 package ru.vityaman.mylogistics.view
 
 object Color {
-  val primary = "#ff1493"
+  val primary = "#388e3c"
   val secondary = "#FF00FF"
   val accent = "#77F"
   val error = "#FF2222"
