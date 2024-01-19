@@ -71,7 +71,8 @@ lazy val frontend = (project in file("frontend"))
     jsEnv := new org.scalajs.jsenv.jsdomnodejs.JSDOMNodeJSEnv(),
     libraryDependencies ++= Seq(
       "com.raquo" %%% "laminar" % "16.0.0",
-      "org.scala-js" %%% "scalajs-dom" % "2.4.0"
+      "org.scala-js" %%% "scalajs-dom" % "2.4.0",
+      "com.lihaoyi" %%% "upickle" % "3.1.4"
     )
   )
 

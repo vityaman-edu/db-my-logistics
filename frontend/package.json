@@ -4,6 +4,7 @@
   "version": "0.0.1",
   "type": "module",
   "dependencies": {
+    "abortcontroller-polyfill": "^1.7.5",
     "jsdom": "^23.2.0",
     "source-map-support": "^0.5.21"
   },
