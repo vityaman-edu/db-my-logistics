@@ -4,12 +4,9 @@ import zio._
 import zio.http.{HttpApp, Server}
 import zio.logging.backend.SLF4J
 
-import ru.vityaman.mylogistics.api.http.{HttpApi, MonitoringApi, UserApi}
-import ru.vityaman.mylogistics.data.jdbc.{
-  JdbcUserRepository,
-  PostgresTransactor
-}
-import ru.vityaman.mylogistics.logic.service.basic.BasicUserService
+import ru.vityaman.mylogistics.api.http._
+import ru.vityaman.mylogistics.data.jdbc._
+import ru.vityaman.mylogistics.logic.service.basic._
 
 object MyLogistics extends ZIOAppDefault {
   override def run: RIO[ZIOAppArgs & Scope, Nothing] = (for {
@@ -33,13 +30,16 @@ object MyLogistics extends ZIOAppDefault {
         // Database
         PostgresTransactor.layer,
         JdbcUserRepository.layer,
+        JdbcTransactionRepository.layer,
 
         // Service
         BasicUserService.layer,
+        BasicTransactionService.layer,
 
         // API
         MonitoringApi.layer,
         UserApi.layer,
+        TransactionApi.layer,
         HttpApi.layer
       )
 }

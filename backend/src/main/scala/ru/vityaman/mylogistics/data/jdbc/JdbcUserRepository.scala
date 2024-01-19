@@ -10,7 +10,6 @@ import ru.vityaman.mylogistics.logic.model.User
 import doobie.Transactor
 import doobie.implicits._
 import doobie.implicits.javasql._
-import doobie.refined.implicits._
 
 private class JdbcUserRepository(xa: Transactor[Task]) extends UserRepository {
   override def register(user: User.Draft): Task[User.Id] =

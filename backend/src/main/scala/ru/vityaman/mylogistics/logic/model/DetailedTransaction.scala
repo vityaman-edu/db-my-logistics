@@ -8,5 +8,3 @@ final case class DetailedTransaction(
     itemKind: ItemKind,
     amount: Amount
 )
-
-object DetailedTransaction {}
