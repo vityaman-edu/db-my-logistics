@@ -69,6 +69,8 @@ lazy val frontend = (project in file("frontend"))
   .settings(
     scalaJSUseMainModuleInitializer := true,
     jsEnv := new org.scalajs.jsenv.jsdomnodejs.JSDOMNodeJSEnv(),
+    // TODO: GitHub Issue #19
+    scalacOptions += "-P:scalajs:nowarnGlobalExecutionContext",
     libraryDependencies ++= Seq(
       "com.raquo" %%% "laminar" % "16.0.0",
       "org.scala-js" %%% "scalajs-dom" % "2.4.0",
