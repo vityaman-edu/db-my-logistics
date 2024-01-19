@@ -47,6 +47,10 @@ object Window {
           div(UserList(storage.users.signal))
         ),
         div(
+          h2("Storages"),
+          div(StorageList(storage.storages.signal))
+        ),
+        div(
           h2("Transactions"),
           div(TransactionList(storage.transactions.signal))
         )

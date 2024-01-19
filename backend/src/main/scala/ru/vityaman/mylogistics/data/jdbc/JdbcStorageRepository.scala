@@ -23,7 +23,6 @@ private class JdbcStorageRepository(xa: Transactor[Task])
       location.name AS location_name
     FROM storage
     JOIN location ON storage.location_id = location.id
-    ORDER BY storage.name
     """
       .query[DetailedStorageRow]
       .stream

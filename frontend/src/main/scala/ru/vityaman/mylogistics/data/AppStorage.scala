@@ -6,5 +6,6 @@ import com.raquo.laminar.api.L._
 
 class AppStorage(
     val users: Var[List[User]] = Var(List[User]()),
-    val transactions: Var[List[Transaction]] = Var(List[Transaction]())
+    val transactions: Var[List[Transaction]] = Var(List[Transaction]()),
+    val storages: Var[List[StorageDetailed]] = Var(List[StorageDetailed]())
 ) {}
