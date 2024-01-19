@@ -9,4 +9,9 @@ final case class Storage(
 object Storage {
   type Id = Int
   type Name = String
+
+  final case class Brief(
+      id: Storage.Id,
+      name: Storage.Name
+  )
 }

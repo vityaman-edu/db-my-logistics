@@ -1,11 +1,12 @@
 package ru.vityaman.mylogistics
 
+import ru.vityaman.mylogistics.model.User
+import ru.vityaman.mylogistics.model.User.rw
+
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 import org.scalajs.dom
-import ru.vityaman.mylogistics.model.User
-import ru.vityaman.mylogistics.model.User.rw
 import upickle.default._
 
 object API {

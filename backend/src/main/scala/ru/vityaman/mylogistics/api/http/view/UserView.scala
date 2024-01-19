@@ -1,13 +1,10 @@
 package ru.vityaman.mylogistics.api.http.view
 
-import zio.json.DeriveJsonDecoder
-import zio.json.DeriveJsonEncoder
-import zio.json.JsonDecoder
-import zio.json.JsonEncoder
-
-import java.time.Instant
+import zio.json._
 
 import ru.vityaman.mylogistics.logic.model.User
+
+import java.time.Instant
 
 case class UserView(
     id: Int,

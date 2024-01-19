@@ -1,8 +1,8 @@
 package ru.vityaman.mylogistics.data.jdbc.row
 
-import java.sql.Timestamp
-
 import ru.vityaman.mylogistics.logic.model.User
+
+import java.sql.Timestamp
 
 final case class UserRow(
     id: Int,

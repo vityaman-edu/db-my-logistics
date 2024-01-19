@@ -1,13 +1,14 @@
 package ru.vityaman.mylogistics
 
+import ru.vityaman.mylogistics.model.User
+import ru.vityaman.mylogistics.view.UserList
+
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.util.Failure
 import scala.util.Success
 
 import com.raquo.laminar.api.L._
 import org.scalajs.dom
-import ru.vityaman.mylogistics.model.User
-import ru.vityaman.mylogistics.view.UserList
 
 object MyLogistics {
   def main(args: Array[String]): Unit = {

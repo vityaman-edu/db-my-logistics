@@ -1,7 +1,8 @@
 package ru.vityaman.mylogistics.view
 
-import com.raquo.laminar.api.L._
 import ru.vityaman.mylogistics.model.User
+
+import com.raquo.laminar.api.L._
 
 object UserList {
   def apply(users: Signal[List[User]]): HtmlElement =

@@ -4,11 +4,11 @@ import zio._
 import zio.interop.catz._
 import zio.{Task, ZIO}
 
+import ru.vityaman.mylogistics.Configuration
+
 import scala.concurrent.ExecutionContext
 
 import doobie.hikari.HikariTransactor
-
-import ru.vityaman.mylogistics.Configuration
 
 object PostgresTransactor {
   val layer: URLayer[Scope with Configuration, HikariTransactor[Task]] =
