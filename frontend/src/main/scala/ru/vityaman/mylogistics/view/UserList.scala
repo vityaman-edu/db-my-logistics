@@ -6,22 +6,9 @@ import com.raquo.laminar.api.L._
 
 object UserList {
   def apply(users: Signal[List[User]]): HtmlElement =
-    div(
-      height := "100%",
-      width := "80%",
-      overflow := "scroll",
-      marginLeft := "auto",
-      marginRight := "auto",
-      display := "flex",
-      flexDirection := "row",
-      justifyContent := "center",
-      table(
-        overflow := "scroll",
-        borderCollapse := "separate",
-        borderSpacing := "10px 1px",
-        thead(tr(th("Id"), th("Nickname"), th("First Name"), th("Last Name"))),
-        tbody(children <-- users.split(_.id)(render))
-      )
+    Table(
+      Seq("Id", "Nickname", "First Name", "Last Name"),
+      tbody(children <-- users.split(_.id)(render))
     )
 
   private def render(id: Int, initial: User, signal: Signal[User]) =
