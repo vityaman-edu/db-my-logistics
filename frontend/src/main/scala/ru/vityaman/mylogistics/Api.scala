@@ -31,5 +31,15 @@ object API {
       dom.ext.Ajax
         .get(s"${base}/storage")
         .map(xhr => read[List[StorageDetailed]](xhr.responseText))
+
+    def getCapacityFree(id: Int): Future[List[Cell]] =
+      dom.ext.Ajax
+        .get(s"${base}/storage/${id}/capacity/free")
+        .map(xhr => read[List[Cell]](xhr.responseText))
+
+    def getCapacityTotal(id: Int): Future[List[Cell]] =
+      dom.ext.Ajax
+        .get(s"${base}/storage/${id}/capacity/total")
+        .map(xhr => read[List[Cell]](xhr.responseText))
   }
 }
