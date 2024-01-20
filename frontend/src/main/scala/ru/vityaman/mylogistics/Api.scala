@@ -7,6 +7,7 @@ import scala.concurrent.Future
 
 import org.scalajs.dom
 
+import model.Cell
 import upickle.default._
 
 object API {
@@ -41,5 +42,10 @@ object API {
       dom.ext.Ajax
         .get(s"${base}/storage/${id}/capacity/total")
         .map(xhr => read[List[Cell]](xhr.responseText))
+
+    def getBalance(id: Int): Future[List[Pack]] =
+      dom.ext.Ajax
+        .get(s"${base}/storage/${id}/balance")
+        .map(xhr => read[List[Pack]](xhr.responseText))
   }
 }

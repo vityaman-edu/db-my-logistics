@@ -16,9 +16,24 @@ object CapacityList {
 
     val get = () => {
       (
-        if (mode.now() == "T") API.Storage.getCapacityTotal(_)
-        else API.Storage.getCapacityFree(_)
-      ) (storageId.now().toInt).onComplete {
+        mode.now() match {
+          case "T" => API.Storage.getCapacityTotal(_)
+          case "F" => API.Storage.getCapacityFree(_)
+          case "B" => { (id: Int) =>
+            API.Storage
+              .getBalance(id)
+              .map(
+                _.map((x) =>
+                  Cell(
+                    itemKind = x.itemKind,
+                    capacity = x.amount
+                  )
+                )
+              )
+          }
+          case _ => throw new Exception("no")
+        }
+      )(storageId.now().toInt).onComplete {
         case Failure(exception) => ???
         case Success(list)      => items.update(_ => list)
       }
@@ -43,11 +58,13 @@ object CapacityList {
         ),
         div(
           margin.percent(1),
-          a("T or F: "),
+          a("T | F | B : "),
           input(
             controlled(
               value <-- mode,
-              onInput.mapToValue.filter(Seq("F", "T", "").contains(_)) --> mode
+              onInput.mapToValue.filter(
+                Seq("F", "T", "B", "").contains(_)
+              ) --> mode
             )
           )
         ),
@@ -57,7 +74,7 @@ object CapacityList {
         )
       ),
       Table(
-        Seq("Item", "Capacity", "Unit"),
+        Seq("Item", "Count", "Unit"),
         tbody(children <-- items.signal.map(_.map(render)))
       )
     )
