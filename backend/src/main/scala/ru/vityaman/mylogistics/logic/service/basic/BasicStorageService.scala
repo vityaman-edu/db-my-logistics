@@ -4,6 +4,7 @@ import zio._
 
 import ru.vityaman.mylogistics.data.StorageRepository
 import ru.vityaman.mylogistics.logic.model.Cell
+import ru.vityaman.mylogistics.logic.model.Pack
 import ru.vityaman.mylogistics.logic.model.Storage
 import ru.vityaman.mylogistics.logic.service.StorageService
 
@@ -17,6 +18,9 @@ private class BasicStorageService(repository: StorageRepository)
 
   override def getCapacityFree(id: Storage.Id): Task[Cell.Set] =
     repository.getCapacityFree(id)
+
+  override def getBalance(id: Storage.Id): Task[Pack.Set] =
+    repository.getBalance(id)
 }
 
 object BasicStorageService {

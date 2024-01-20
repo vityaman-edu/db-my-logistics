@@ -7,8 +7,10 @@ import zio.interop.catz._
 
 import ru.vityaman.mylogistics.data.StorageRepository
 import ru.vityaman.mylogistics.data.jdbc.row.DetailedCellRow
+import ru.vityaman.mylogistics.data.jdbc.row.DetailedPackRow
 import ru.vityaman.mylogistics.data.jdbc.row.DetailedStorageRow
 import ru.vityaman.mylogistics.logic.model.Cell
+import ru.vityaman.mylogistics.logic.model.Pack
 import ru.vityaman.mylogistics.logic.model.Storage
 
 import doobie.Transactor
@@ -65,6 +67,27 @@ private class JdbcStorageRepository(xa: Transactor[Task])
     ORDER BY item_kind.id
     """
       .query[DetailedCellRow]
+      .stream
+      .transact(xa)
+      .compile
+      .toList
+      .map(_.map(_.asModel))
+
+  def getBalance(id: Storage.Id): Task[Pack.Set] =
+    sql"""
+    SELECT 
+      item_kind.id    AS item_kind_id,
+      item_kind.name  AS item_kind_name,
+      item_kind.unit  AS item_kind_unit,
+      amount          AS amount
+    FROM storage
+    JOIN storage_balance(max_moment()) 
+      ON storage.id = storage_balance.storage_id
+    JOIN item_kind ON storage_balance.item_kind_id = item_kind.id
+    WHERE storage.id = ${id}
+    ORDER BY item_kind.id
+    """
+      .query[DetailedPackRow]
       .stream
       .transact(xa)
       .compile

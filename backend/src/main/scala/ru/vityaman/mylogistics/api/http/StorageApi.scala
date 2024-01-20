@@ -8,6 +8,7 @@ import zio.json._
 
 import ru.vityaman.mylogistics.api.http.view.CellView
 import ru.vityaman.mylogistics.api.http.view.DetailedStorageView
+import ru.vityaman.mylogistics.api.http.view.PackView
 import ru.vityaman.mylogistics.logic.service.StorageService
 
 class StorageApi(service: StorageService) {
@@ -33,6 +34,14 @@ class StorageApi(service: StorageService) {
         service
           .getCapacityTotal(id)
           .map(_.map(CellView.fromModel))
+          .map(_.toJsonPretty)
+          .mapBoth(Response.fromThrowable(_), Response.json(_))
+      },
+    GET / "api" / "storage" / int("id") / "balance" ->
+      handler { (id: Int, _: Request) =>
+        service
+          .getBalance(id)
+          .map(_.map(PackView.fromModel))
           .map(_.toJsonPretty)
           .mapBoth(Response.fromThrowable(_), Response.json(_))
       }
