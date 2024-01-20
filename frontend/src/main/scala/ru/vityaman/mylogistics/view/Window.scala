@@ -51,7 +51,7 @@ object Window {
           div(StorageList(storage.storages.signal))
         ),
         div(
-          h2("Capacity"),
+          h2("Capacity & Balance"),
           div(CapacityList())
         ),
         div(

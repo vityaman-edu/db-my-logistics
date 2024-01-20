@@ -11,5 +11,10 @@ object Transfer {
       incomeMoment: Instant
   )
 
+  final case class Equipped(
+      info: Transfer.Detailed,
+      packs: Pack.Set
+  )
+
   type Id = Int
 }
