@@ -6,7 +6,9 @@ import zio.ZLayer
 import zio.interop.catz._
 
 import ru.vityaman.mylogistics.data.StorageRepository
+import ru.vityaman.mylogistics.data.jdbc.row.DetailedCellRow
 import ru.vityaman.mylogistics.data.jdbc.row.DetailedStorageRow
+import ru.vityaman.mylogistics.logic.model.Cell
 import ru.vityaman.mylogistics.logic.model.Storage
 
 import doobie.Transactor
@@ -25,6 +27,44 @@ private class JdbcStorageRepository(xa: Transactor[Task])
     JOIN location ON storage.location_id = location.id
     """
       .query[DetailedStorageRow]
+      .stream
+      .transact(xa)
+      .compile
+      .toList
+      .map(_.map(_.asModel))
+
+  def getCapacityTotal(id: Storage.Id): Task[Cell.Set] =
+    sql"""
+    SELECT 
+      item_kind.id    AS item_kind_id,
+      item_kind.name  AS item_kind_name,
+      item_kind.unit  AS item_kind_unit,
+      capacity        AS capacity
+    FROM storage_capacity_total
+    JOIN item_kind ON item_kind_id = item_kind.id
+    WHERE storage_id = ${id}
+    ORDER BY item_kind.id
+    """
+      .query[DetailedCellRow]
+      .stream
+      .transact(xa)
+      .compile
+      .toList
+      .map(_.map(_.asModel))
+
+  def getCapacityFree(id: Storage.Id): Task[Cell.Set] =
+    sql"""
+    SELECT 
+      item_kind.id    AS item_kind_id,
+      item_kind.name  AS item_kind_name,
+      item_kind.unit  AS item_kind_unit,
+      capacity        AS capacity
+    FROM storage_capacity_free(max_moment()) 
+    JOIN item_kind ON item_kind_id = item_kind.id
+    WHERE storage_id = ${id}
+    ORDER BY item_kind.id
+    """
+      .query[DetailedCellRow]
       .stream
       .transact(xa)
       .compile
