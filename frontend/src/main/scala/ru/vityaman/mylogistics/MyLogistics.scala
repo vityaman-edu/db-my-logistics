@@ -23,6 +23,11 @@ object MyLogistics {
       case Success(list)      => storage.transactions.update(_ => list)
     }
 
+    API.Transfer.getAll().onComplete {
+      case Failure(exception) => ???
+      case Success(list)      => storage.transfers.update(_ => list)
+    }
+
     API.Storage.getAll().onComplete {
       case Failure(exception) => ???
       case Success(list)      => storage.storages.update(_ => list)

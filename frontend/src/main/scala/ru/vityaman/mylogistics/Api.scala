@@ -27,6 +27,13 @@ object API {
         .map(xhr => read[List[Transaction]](xhr.responseText))
   }
 
+  object Transfer {
+     def getAll(): Future[List[Transfer]] =
+      dom.ext.Ajax
+        .get(s"${base}/transfer")
+        .map(xhr => read[List[Transfer]](xhr.responseText))
+  }
+
   object Storage {
     def getAll(): Future[List[StorageDetailed]] =
       dom.ext.Ajax

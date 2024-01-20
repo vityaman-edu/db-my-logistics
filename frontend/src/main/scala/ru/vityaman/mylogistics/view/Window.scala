@@ -57,6 +57,10 @@ object Window {
         div(
           h2("Transactions"),
           div(TransactionList(storage.transactions.signal))
+        ),
+        div(
+          h2("Transfers"),
+          div(TransferList(storage.transfers.signal))
         )
       ),
       Header()

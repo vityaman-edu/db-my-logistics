@@ -17,6 +17,7 @@ object Table {
         overflow := "scroll",
         borderCollapse := "separate",
         borderSpacing := "10px 1px",
+        border := "1px solid",
         thead(tr(headers.map(th(_)))),
         body
       )
