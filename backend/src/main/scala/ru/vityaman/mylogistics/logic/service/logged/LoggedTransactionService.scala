@@ -5,6 +5,7 @@ import zio.Task
 import zio.ZIO
 import zio.ZLayer
 
+import ru.vityaman.mylogistics.logic.model.Atom
 import ru.vityaman.mylogistics.logic.model.DetailedTransaction
 import ru.vityaman.mylogistics.logic.model.Transfer
 import ru.vityaman.mylogistics.logic.service.TransactionService
@@ -23,6 +24,11 @@ final class LoggedTransactionService(origin: TransactionService)
   override def create(transfer: Transfer.Request): Task[Transfer.Id] =
     origin
       .create(transfer)
+      .tapErrorCause(ZIO.logCause(_))
+
+  override def addAtom(id: Transfer.Id, atom: Atom): Task[Unit] =
+    origin
+      .addAtom(id, atom)
       .tapErrorCause(ZIO.logCause(_))
 }
 

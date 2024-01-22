@@ -5,6 +5,7 @@ import zio.http.Method.{GET, POST}
 import zio.http._
 import zio.json._
 
+import ru.vityaman.mylogistics.api.http.request.CreateAtomRequest
 import ru.vityaman.mylogistics.api.http.request.CreateTransferRequest
 import ru.vityaman.mylogistics.api.http.view.DetailedTransactionView
 import ru.vityaman.mylogistics.api.http.view.EquippedTransferView
@@ -39,6 +40,16 @@ class TransactionApi(service: TransactionService) {
           .map(_.asModel)
           .flatMap(service.create(_))
           .mapBoth(Response.fromThrowable(_), id => Response.text(id.toString))
+      },
+    POST / "api" / "transfer" / int("transferId") / "atom" ->
+      handler { (transferId: Int, request: Request) =>
+        request.body.asString
+          .map(_.fromJson[CreateAtomRequest])
+          .flatMap(ZIO.fromEither(_))
+          .mapError(_ => new IllegalArgumentException("invalid"))
+          .map(_.asModel)
+          .flatMap(service.addAtom(transferId, _))
+          .mapBoth(Response.fromThrowable(_), _ => Response.ok)
       }
   )
 }

@@ -7,6 +7,7 @@ import ru.vityaman.mylogistics.data.TransactionRepository
 import ru.vityaman.mylogistics.data.jdbc.row.DetailedTransactionRow
 import ru.vityaman.mylogistics.data.jdbc.row.DetailedTransferRow
 import ru.vityaman.mylogistics.logic.model.Amount
+import ru.vityaman.mylogistics.logic.model.Atom
 import ru.vityaman.mylogistics.logic.model.DetailedTransaction
 import ru.vityaman.mylogistics.logic.model.ItemKind
 import ru.vityaman.mylogistics.logic.model.Pack
@@ -79,6 +80,7 @@ private class JdbcTransactionRepository(xa: Transactor[Task])
               .toList
           )
           .map { case (info, packs) => Transfer.Equipped(info, packs) }
+          .sortBy(_.info.withdrawMoment)
       }
 
   override def create(transfer: Transfer.Request): Task[Transfer.Id] =
@@ -94,6 +96,19 @@ private class JdbcTransactionRepository(xa: Transactor[Task])
       .query[Int]
       .unique
       .transact(xa)
+
+  def addAtom(id: Transfer.Id, atom: Atom): Task[Unit] =
+    sql"""
+    SELECT transfer_atom_create(
+      ${id},
+      ${atom.itemKind},
+      ${atom.amount.value}
+    )
+    """
+      .query[Int]
+      .unique
+      .transact(xa)
+      .map(_ => ())
 
   private def asTransfer(row: DetailedTransferRow): Transfer.Detailed =
     Transfer.Detailed(
