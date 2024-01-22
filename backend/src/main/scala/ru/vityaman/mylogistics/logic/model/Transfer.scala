@@ -16,5 +16,12 @@ object Transfer {
       packs: Pack.Set
   )
 
+  final case class Request(
+      sourceId: Storage.Id,
+      targetId: Storage.Id,
+      withdrawMoment: Instant,
+      incomeMoment: Instant
+  )
+
   type Id = Int
 }

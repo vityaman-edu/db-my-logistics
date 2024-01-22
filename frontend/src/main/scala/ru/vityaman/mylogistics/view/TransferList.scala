@@ -30,7 +30,7 @@ object TransferList {
                       margin := "0%",
                       td(child.text <-- signal.map(_.itemKind.name)),
                       td(child.text <-- signal.map(_.amount)),
-                      td(child.text <-- signal.map(_.itemKind.name))
+                      td(child.text <-- signal.map(_.itemKind.unit))
                     )
                 })
               )

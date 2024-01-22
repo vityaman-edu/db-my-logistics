@@ -7,6 +7,7 @@ import zio.logging.backend.SLF4J
 import ru.vityaman.mylogistics.api.http._
 import ru.vityaman.mylogistics.data.jdbc._
 import ru.vityaman.mylogistics.logic.service.basic._
+import ru.vityaman.mylogistics.logic.service.logged.LoggedTransactionService
 
 object MyLogistics extends ZIOAppDefault {
   override def run: RIO[ZIOAppArgs & Scope, Nothing] = (for {
@@ -35,7 +36,7 @@ object MyLogistics extends ZIOAppDefault {
 
         // Service
         BasicUserService.layer,
-        BasicTransactionService.layer,
+        (BasicTransactionService.layer >>> LoggedTransactionService.layer),
         BasicStorageService.layer,
 
         // API

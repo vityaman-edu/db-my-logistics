@@ -9,7 +9,7 @@ DECLARE
   manager_id  integer;
   transfer_id integer;
 BEGIN
-  SELECT id INTO manager_id
+  SELECT id INTO STRICT manager_id
   FROM manager 
   WHERE manager.user_id = initiator_id;
 

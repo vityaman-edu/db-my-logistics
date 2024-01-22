@@ -13,6 +13,8 @@ import ru.vityaman.mylogistics.logic.model.Pack
 import ru.vityaman.mylogistics.logic.model.Storage
 import ru.vityaman.mylogistics.logic.model.Transfer
 
+import java.sql.Timestamp
+
 import doobie.Transactor
 import doobie.implicits._
 import doobie.implicits.javasql._
@@ -58,42 +60,71 @@ private class JdbcTransactionRepository(xa: Transactor[Task])
     FROM transfer
     JOIN storage AS source ON source.id = transfer.source_id
     JOIN storage AS target ON target.id = transfer.target_id
-    JOIN transfer_atom ON transfer_atom.transfer_id = transfer.id
-    JOIN item_kind ON transfer_atom.item_kind_id = item_kind.id
+    LEFT JOIN transfer_atom ON transfer_atom.transfer_id = transfer.id
+    LEFT JOIN item_kind ON transfer_atom.item_kind_id = item_kind.id
     """
       .query[DetailedTransferRow]
       .stream
       .transact(xa)
       .compile
       .toList
-      .map { rows =>
-        rows
-          .map(row =>
-            Transfer.Detailed(
-              id = row.transferId,
-              source = Storage.Brief(
-                id = row.sourceId,
-                name = row.sourceName
-              ),
-              target = Storage.Brief(
-                id = row.targetId,
-                name = row.targetName
-              ),
-              withdrawMoment = row.withdrawMoment.toInstant,
-              incomeMoment = row.incomeMoment.toInstant
-            ) -> Pack(
-              itemKind = ItemKind(
-                id = row.itemKindId,
-                name = row.itemKindName,
-                unit = row.itemKindUnit
-              ),
-              amount = Amount(row.amount)
-            )
+      .map(_.partition(_.isEmpty))
+      .map { case (empties: List[_], others: List[_]) =>
+        empties
+          .map(row => asTransfer(row) -> List[Pack]())
+          .concat(
+            others
+              .map(row => asTransfer(row) -> asPack(row).get)
+              .groupMap(_._1)(_._2)
+              .toList
           )
-          .groupMap(_._1)(_._2)
-          .toList
           .map { case (info, packs) => Transfer.Equipped(info, packs) }
       }
+
+  override def create(transfer: Transfer.Request): Task[Transfer.Id] =
+    sql"""
+    SELECT transfer_create(
+      ${transfer.sourceId},
+      ${transfer.targetId},
+      ${Timestamp.from(transfer.withdrawMoment)},
+      ${Timestamp.from(transfer.incomeMoment)},
+      3
+    )
+    """
+      .query[Int]
+      .unique
+      .transact(xa)
+
+  private def asTransfer(row: DetailedTransferRow): Transfer.Detailed =
+    Transfer.Detailed(
+      id = row.transferId,
+      source = Storage.Brief(
+        id = row.sourceId,
+        name = row.sourceName
+      ),
+      target = Storage.Brief(
+        id = row.targetId,
+        name = row.targetName
+      ),
+      withdrawMoment = row.withdrawMoment.toInstant,
+      incomeMoment = row.incomeMoment.toInstant
+    )
+
+  private def asPack(row: DetailedTransferRow): Option[Pack] =
+    if (!row.isEmpty) {
+      Some(
+        Pack(
+          itemKind = ItemKind(
+            id = row.itemKindId.get,
+            name = row.itemKindName.get,
+            unit = row.itemKindUnit.get
+          ),
+          amount = Amount(row.amount.get)
+        )
+      )
+    } else {
+      None
+    }
 }
 
 object JdbcTransactionRepository {

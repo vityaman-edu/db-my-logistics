@@ -14,6 +14,9 @@ class BasicTransactionService(repository: TransactionRepository)
 
   override def getTransfers(): Task[List[Transfer.Equipped]] =
     repository.getTransfers()
+
+  override def create(transfer: Transfer.Request): Task[Transfer.Id] =
+    repository.create(transfer)
 }
 
 object BasicTransactionService {
