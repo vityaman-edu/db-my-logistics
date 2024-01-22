@@ -1,5 +1,6 @@
 package ru.vityaman.mylogistics
 
+import ru.vityaman.mylogistics.model.Transfer.{Draft => TransferDraft}
 import ru.vityaman.mylogistics.model._
 
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -7,7 +8,6 @@ import scala.concurrent.Future
 
 import org.scalajs.dom
 
-import model.Cell
 import upickle.default._
 
 object API {
@@ -32,6 +32,22 @@ object API {
       dom.ext.Ajax
         .get(s"${base}/transfer")
         .map(xhr => read[List[Transfer]](xhr.responseText))
+
+    def create(transfer: TransferDraft): Future[Int] =
+      dom.ext.Ajax
+        .post(
+          url = s"${base}/transfer",
+          data = write[TransferDraft](transfer)
+        )
+        .map(xhr => read[Int](xhr.responseText))
+
+    def addAtom(transferId: Int, atom: Atom): Future[Unit] =
+      dom.ext.Ajax
+        .post(
+          url = s"${base}/transfer/${transferId}/atom",
+          data = write[Atom](atom)
+        )
+        .map(_ => ())
   }
 
   object Storage {

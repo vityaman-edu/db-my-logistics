@@ -61,6 +61,10 @@ object Window {
         div(
           h2("Transfers"),
           div(TransferList(storage.transfers.signal))
+        ),
+        div(
+          h2("Add Transfer Atom"),
+          div(AddAtomForm())
         )
       ),
       Header()

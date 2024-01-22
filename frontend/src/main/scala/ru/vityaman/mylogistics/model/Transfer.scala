@@ -12,5 +12,16 @@ final case class Transfer(
 )
 
 object Transfer {
+  final case class Draft(
+      sourceId: Int,
+      targetId: Int,
+      withdrawMoment: String,
+      incomeMoment: String
+  )
+
+  object Draft {
+    implicit val rw: ReadWriter[Transfer.Draft] = macroRW[Transfer.Draft]
+  }
+
   implicit val rw: ReadWriter[Transfer] = macroRW[Transfer]
 }
