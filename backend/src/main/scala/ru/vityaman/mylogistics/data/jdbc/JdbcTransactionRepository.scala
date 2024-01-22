@@ -57,12 +57,23 @@ private class JdbcTransactionRepository(xa: Transactor[Task])
       item_kind.id,
       item_kind.name,
       item_kind.unit,
-      amount
+      SUM(amount)
     FROM transfer
     JOIN storage AS source ON source.id = transfer.source_id
     JOIN storage AS target ON target.id = transfer.target_id
     LEFT JOIN transfer_atom ON transfer_atom.transfer_id = transfer.id
     LEFT JOIN item_kind ON transfer_atom.item_kind_id = item_kind.id
+    GROUP BY       
+      transfer.id,
+      transfer.withdraw_moment,
+      transfer.income_moment,
+      source.id,
+      source.name,
+      target.id,
+      target.name,
+      item_kind.id,
+      item_kind.name,
+      item_kind.unit
     """
       .query[DetailedTransferRow]
       .stream
