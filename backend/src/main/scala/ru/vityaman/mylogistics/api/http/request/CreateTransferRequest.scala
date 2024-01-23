@@ -1,6 +1,9 @@
 package ru.vityaman.mylogistics.api.http.request
 
-import zio.json._
+import zio.json.DeriveJsonDecoder
+import zio.json.DeriveJsonEncoder
+import zio.json.JsonDecoder
+import zio.json.JsonEncoder
 
 import ru.vityaman.mylogistics.logic.model.Transfer
 
