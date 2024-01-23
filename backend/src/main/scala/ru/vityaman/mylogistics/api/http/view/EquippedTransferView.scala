@@ -12,7 +12,8 @@ final case class EquippedTransferView(
     target: StorageBriefView,
     withdrawMoment: Instant,
     incomeMoment: Instant,
-    packs: List[PackView]
+    packs: List[PackView],
+    isCommited: Boolean
 )
 
 object EquippedTransferView {
@@ -23,7 +24,8 @@ object EquippedTransferView {
       target = StorageBriefView.fromModel(model.info.target),
       withdrawMoment = model.info.withdrawMoment,
       incomeMoment = model.info.incomeMoment,
-      packs = model.packs.map(PackView.fromModel(_))
+      packs = model.packs.map(PackView.fromModel(_)),
+      isCommited = model.info.isCommited
     )
 
   implicit val decoder: JsonDecoder[EquippedTransferView] =

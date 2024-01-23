@@ -11,4 +11,5 @@ trait TransactionService {
   def getTransfers(): Task[List[Transfer.Equipped]]
   def create(transfer: Transfer.Request): Task[Transfer.Id]
   def addAtom(id: Transfer.Id, atom: Atom): Task[Unit]
+  def approve(id: Transfer.Id): Task[Unit]
 }

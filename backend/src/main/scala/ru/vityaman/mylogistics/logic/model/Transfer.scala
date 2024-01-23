@@ -8,7 +8,8 @@ object Transfer {
       source: Storage.Brief,
       target: Storage.Brief,
       withdrawMoment: Instant,
-      incomeMoment: Instant
+      incomeMoment: Instant,
+      isCommited: Boolean
   )
 
   final case class Equipped(

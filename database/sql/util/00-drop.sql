@@ -23,7 +23,7 @@ DROP TABLE IF EXISTS consume_atom CASCADE;
 DROP FUNCTION IF EXISTS consume_atom_create CASCADE;
 DROP FUNCTION IF EXISTS consume_create CASCADE;
 DROP FUNCTION IF EXISTS consume_integrity_check CASCADE;
-DROP TRIGGER IF EXISTS consume_integrity_check CASCADE;
+-- DROP TRIGGER IF EXISTS consume_integrity_check;
 
 DROP FUNCTION IF EXISTS item_kind_create CASCADE;
 
@@ -53,7 +53,7 @@ DROP VIEW IF EXISTS storage_transaction CASCADE;
 DROP FUNCTION IF EXISTS supply_atom_create CASCADE;
 DROP FUNCTION IF EXISTS supply_create CASCADE;
 DROP FUNCTION IF EXISTS supply_integrity_check CASCADE;
-DROP TRIGGER IF EXISTS supply_integrity_check CASCADE;
+-- DROP TRIGGER IF EXISTS supply_integrity_check;
 
 DROP FUNCTION IF EXISTS transfer_reset_votes CASCADE;
 DROP FUNCTION IF EXISTS transfer_validate CASCADE;
@@ -61,7 +61,7 @@ DROP FUNCTION IF EXISTS transfer_approve CASCADE;
 DROP FUNCTION IF EXISTS transfer_atom_create CASCADE;
 DROP FUNCTION IF EXISTS transfer_create CASCADE;
 DROP FUNCTION IF EXISTS transfer_integrity_check CASCADE;
-DROP TRIGGER IF EXISTS transfer_integrity_check CASCADE;
+-- DROP TRIGGER IF EXISTS transfer_integrity_check;
 
 DROP FUNCTION IF EXISTS max_moment CASCADE;
 DROP FUNCTION IF EXISTS fill CASCADE;

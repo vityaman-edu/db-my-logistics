@@ -57,7 +57,8 @@ private class JdbcTransactionRepository(xa: Transactor[Task])
       item_kind.id,
       item_kind.name,
       item_kind.unit,
-      SUM(amount)
+      SUM(amount),
+      transfer_is_commited(transfer)
     FROM transfer
     JOIN storage AS source ON source.id = transfer.source_id
     JOIN storage AS target ON target.id = transfer.target_id
@@ -108,7 +109,7 @@ private class JdbcTransactionRepository(xa: Transactor[Task])
       .unique
       .transact(xa)
 
-  def addAtom(id: Transfer.Id, atom: Atom): Task[Unit] =
+  override def addAtom(id: Transfer.Id, atom: Atom): Task[Unit] =
     sql"""
     SELECT transfer_atom_create(
       ${id},
@@ -120,6 +121,14 @@ private class JdbcTransactionRepository(xa: Transactor[Task])
       .unique
       .transact(xa)
       .map(_ => ())
+
+  override def approve(id: Transfer.Id): Task[Unit] =
+    sql"""
+      SELECT transfer_approve(${id}, 1)
+    """
+      .query[Unit]
+      .unique
+      .transact(xa)
 
   private def asTransfer(row: DetailedTransferRow): Transfer.Detailed =
     Transfer.Detailed(
@@ -133,7 +142,8 @@ private class JdbcTransactionRepository(xa: Transactor[Task])
         name = row.targetName
       ),
       withdrawMoment = row.withdrawMoment.toInstant,
-      incomeMoment = row.incomeMoment.toInstant
+      incomeMoment = row.incomeMoment.toInstant,
+      isCommited = row.isCommited
     )
 
   private def asPack(row: DetailedTransferRow): Option[Pack] =

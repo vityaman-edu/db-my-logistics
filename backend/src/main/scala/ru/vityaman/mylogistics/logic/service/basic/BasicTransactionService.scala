@@ -21,6 +21,9 @@ class BasicTransactionService(repository: TransactionRepository)
 
   override def addAtom(id: Transfer.Id, atom: Atom): Task[Unit] =
     repository.addAtom(id, atom)
+
+  override def approve(id: Transfer.Id): Task[Unit] =
+    repository.approve(id)
 }
 
 object BasicTransactionService {

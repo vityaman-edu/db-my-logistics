@@ -8,7 +8,8 @@ final case class Transfer(
     target: StorageBrief,
     withdrawMoment: String,
     incomeMoment: String,
-    packs: List[Pack]
+    packs: List[Pack],
+    isCommited: Boolean
 )
 
 object Transfer {

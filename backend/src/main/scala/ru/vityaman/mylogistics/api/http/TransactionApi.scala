@@ -50,6 +50,12 @@ class TransactionApi(service: TransactionService) {
           .map(_.asModel)
           .flatMap(service.addAtom(transferId, _))
           .mapBoth(Response.fromThrowable(_), _ => Response.ok)
+      },
+    POST / "api" / "transfer" / int("transferId") / "approval" ->
+      handler { (transferId: Int, request: Request) =>
+        service
+          .approve(transferId)
+          .mapBoth(Response.fromThrowable(_), _ => Response.ok)
       }
   )
 }

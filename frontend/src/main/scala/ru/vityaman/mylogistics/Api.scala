@@ -48,6 +48,11 @@ object API {
           data = write[Atom](atom)
         )
         .map(_ => ())
+
+    def approve(transferId: Int): Future[Unit] =
+      dom.ext.Ajax
+        .post(s"${base}/transfer/${transferId}/approval")
+        .map(_ => ())
   }
 
   object Storage {

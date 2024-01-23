@@ -16,7 +16,8 @@ final case class DetailedTransferRow(
     itemKindId: Option[Int],
     itemKindName: Option[String],
     itemKindUnit: Option[String],
-    amount: Option[Int]
+    amount: Option[Int],
+    isCommited: Boolean
 ) {
   assert(
     !(

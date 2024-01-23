@@ -30,6 +30,11 @@ final class LoggedTransactionService(origin: TransactionService)
     origin
       .addAtom(id, atom)
       .tapErrorCause(ZIO.logCause(_))
+
+  override def approve(id: Transfer.Id): Task[Unit] =
+    origin
+      .approve(id)
+      .tapErrorCause(ZIO.logCause(_))
 }
 
 object LoggedTransactionService {
