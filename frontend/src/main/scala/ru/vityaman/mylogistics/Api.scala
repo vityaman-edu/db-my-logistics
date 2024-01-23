@@ -18,6 +18,14 @@ object API {
       dom.ext.Ajax
         .get(s"${base}/user")
         .map(xhr => read[List[User]](xhr.responseText))
+
+    def register(user: UserDraft): Future[Unit] =
+      dom.ext.Ajax
+        .post(
+          url = s"${base}/user",
+          data = write[UserDraft](user)
+        )
+        .map(_ => ())
   }
 
   object Transaction {
@@ -84,6 +92,18 @@ object API {
         .post(
           url = s"${base}/storage/${id}/cell",
           data = write[Atom](atom)
+        )
+        .map(_ => ())
+
+    def assignAdmin(id: Int, userId: Int): Future[Unit] =
+      dom.ext.Ajax
+        .post(
+          url = s"${base}/storage/${id}/admin",
+          data = write[AssignAdminRequest](
+            AssignAdminRequest(
+              userId = userId
+            )
+          )
         )
         .map(_ => ())
   }

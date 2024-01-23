@@ -47,6 +47,10 @@ object Window {
           div(UserList(storage.users.signal, storage.userId))
         ),
         div(
+          h2("Register a User"),
+          div(AddUserForm())
+        ),
+        div(
           h2("Storages"),
           div(StorageList(storage.storages.signal))
         ),
