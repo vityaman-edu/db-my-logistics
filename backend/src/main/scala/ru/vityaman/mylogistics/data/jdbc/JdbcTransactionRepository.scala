@@ -122,9 +122,9 @@ private class JdbcTransactionRepository(xa: Transactor[Task])
       .transact(xa)
       .map(_ => ())
 
-  override def approve(id: Transfer.Id): Task[Unit] =
+  override def approve(approval: Transfer.Approval): Task[Unit] =
     sql"""
-      SELECT transfer_approve(${id}, 1)
+      SELECT transfer_approve(${approval.transfer}, ${approval.user})
     """
       .query[Unit]
       .unique

@@ -5,10 +5,12 @@ import zio.http.Method.{GET, POST}
 import zio.http._
 import zio.json._
 
+import ru.vityaman.mylogistics.api.http.request.ApproveRequest
 import ru.vityaman.mylogistics.api.http.request.CreateAtomRequest
 import ru.vityaman.mylogistics.api.http.request.CreateTransferRequest
 import ru.vityaman.mylogistics.api.http.view.DetailedTransactionView
 import ru.vityaman.mylogistics.api.http.view.EquippedTransferView
+import ru.vityaman.mylogistics.logic.model.Transfer
 import ru.vityaman.mylogistics.logic.service.TransactionService
 
 import java.lang.IllegalArgumentException
@@ -53,8 +55,18 @@ class TransactionApi(service: TransactionService) {
       },
     POST / "api" / "transfer" / int("transferId") / "approval" ->
       handler { (transferId: Int, request: Request) =>
-        service
-          .approve(transferId)
+        request.body.asString
+          .map(_.fromJson[ApproveRequest])
+          .flatMap(ZIO.fromEither(_))
+          .mapError(_ => new IllegalArgumentException("invalid"))
+          .flatMap(approve =>
+            service.approve(
+              Transfer.Approval(
+                transfer = transferId,
+                user = approve.userId
+              )
+            )
+          )
           .mapBoth(Response.fromThrowable(_), _ => Response.ok)
       }
   )

@@ -24,5 +24,10 @@ object Transfer {
       incomeMoment: Instant
   )
 
+  final case class Approval(
+      transfer: Transfer.Id,
+      user: User.Id
+  )
+
   type Id = Int
 }

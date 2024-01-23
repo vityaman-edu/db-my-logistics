@@ -49,9 +49,12 @@ object API {
         )
         .map(_ => ())
 
-    def approve(transferId: Int): Future[Unit] =
+    def approve(transferId: Int, approval: Approval): Future[Unit] =
       dom.ext.Ajax
-        .post(s"${base}/transfer/${transferId}/approval")
+        .post(
+          url = s"${base}/transfer/${transferId}/approval",
+          data = write[Approval](approval)
+        )
         .map(_ => ())
   }
 

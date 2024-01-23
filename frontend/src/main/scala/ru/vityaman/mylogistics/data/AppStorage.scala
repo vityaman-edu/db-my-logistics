@@ -9,5 +9,6 @@ class AppStorage(
     val transactions: Var[List[Transaction]] = Var(List[Transaction]()),
     val storages: Var[List[StorageDetailed]] = Var(List[StorageDetailed]()),
     val transfers: Var[List[Transfer]] = Var(List[Transfer]()),
-    val itemKinds: Var[List[ItemKind]] = Var(List[ItemKind]())
+    val itemKinds: Var[List[ItemKind]] = Var(List[ItemKind]()),
+    val userId: Var[Int] = Var(1)
 ) {}

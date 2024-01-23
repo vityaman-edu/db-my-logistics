@@ -44,7 +44,7 @@ object Window {
         ),
         div(
           h2("Users"),
-          div(UserList(storage.users.signal))
+          div(UserList(storage.users.signal, storage.userId))
         ),
         div(
           h2("Storages"),
@@ -64,7 +64,7 @@ object Window {
         ),
         div(
           h2("Transfers"),
-          div(TransferList(storage.transfers.signal))
+          div(TransferList(storage.transfers.signal, storage.userId))
         ),
         div(
           h2("Add Transfer Atom"),

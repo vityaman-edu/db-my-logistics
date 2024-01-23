@@ -1,6 +1,7 @@
 package ru.vityaman.mylogistics.view
 
 import ru.vityaman.mylogistics.API
+import ru.vityaman.mylogistics.model.Approval
 import ru.vityaman.mylogistics.model.Pack
 import ru.vityaman.mylogistics.model.Transfer
 
@@ -11,9 +12,12 @@ import com.raquo.laminar.api.L._
 import org.scalajs.dom
 
 object TransferList {
-  def apply(transfers: Signal[List[Transfer]]): HtmlElement = {
+  def apply(
+      transfers: Signal[List[Transfer]],
+      userId: Var[Int]
+  ): HtmlElement = {
     val approve = (transferId: Int) => {
-      API.Transfer.approve(transferId).onComplete {
+      API.Transfer.approve(transferId, Approval(userId.now())).onComplete {
         case Failure(_) => dom.window.alert("Sad things happened... :.)")
         case Success(_) => dom.window.alert("Approved, yoyoyo!")
       }
