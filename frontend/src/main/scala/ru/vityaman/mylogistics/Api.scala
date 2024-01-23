@@ -71,4 +71,11 @@ object API {
         .get(s"${base}/storage/${id}/balance")
         .map(xhr => read[List[Pack]](xhr.responseText))
   }
+
+  object ItemKind {
+    def getAll(): Future[List[ItemKind]] =
+      dom.ext.Ajax
+        .get(s"${base}/item/kind")
+        .map(xhr => read[List[ItemKind]](xhr.responseText))
+  }
 }

@@ -33,17 +33,20 @@ object MyLogistics extends ZIOAppDefault {
         JdbcUserRepository.layer,
         JdbcTransactionRepository.layer,
         JdbcStorageRepository.layer,
+        JdbcItemKindRepository.layer,
 
         // Service
         BasicUserService.layer,
         (BasicTransactionService.layer >>> LoggedTransactionService.layer),
         BasicStorageService.layer,
+        BasicItemKindService.layer,
 
         // API
         MonitoringApi.layer,
         UserApi.layer,
         TransactionApi.layer,
         StorageApi.layer,
+        ItemApi.layer,
         HttpApi.layer
       )
 }

@@ -4,4 +4,3 @@ final case class Atom(
     itemKind: ItemKind.Id,
     amount: Amount
 )
-  

@@ -33,6 +33,11 @@ object MyLogistics {
       case Success(list)      => storage.storages.update(_ => list)
     }
 
+    API.ItemKind.getAll().onComplete {
+      case Failure(exception) => ???
+      case Success(list)      => storage.itemKinds.update(_ => list)
+    }
+
     render(dom.document.querySelector("#root"), Window(storage))
   }
 }

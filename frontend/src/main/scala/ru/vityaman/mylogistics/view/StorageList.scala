@@ -2,9 +2,8 @@ package ru.vityaman.mylogistics.view
 
 import ru.vityaman.mylogistics.model.StorageDetailed
 
-import com.raquo.laminar.api.L._
-
 import com.raquo.airstream.core.Signal
+import com.raquo.laminar.api.L._
 
 object StorageList {
   def apply(storages: Signal[List[StorageDetailed]]): HtmlElement =

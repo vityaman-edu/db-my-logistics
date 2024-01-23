@@ -10,7 +10,8 @@ object HttpApi {
     UserApi &
       MonitoringApi &
       TransactionApi &
-      StorageApi,
+      StorageApi &
+      ItemApi,
     HttpApp[Any]
   ] =
     ZLayer.fromZIO {
@@ -20,12 +21,14 @@ object HttpApi {
         user <- ZIO.service[UserApi]
         transaction <- ZIO.service[TransactionApi]
         storage <- ZIO.service[StorageApi]
+        item <- ZIO.service[ItemApi]
         app = ((
           Routes.empty
             ++ observability.routes
             ++ user.routes
             ++ transaction.routes
             ++ storage.routes
+            ++ item.routes
         ) @@ addHeader(Header.AccessControlAllowOrigin.All)
           @@ addHeader(Header.AccessControlAllowMethods(Method.GET))).toHttpApp
       } yield app

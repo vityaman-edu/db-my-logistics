@@ -2,8 +2,8 @@ package ru.vityaman.mylogistics.data
 
 import zio._
 
-import ru.vityaman.mylogistics.logic.model.DetailedTransaction
 import ru.vityaman.mylogistics.logic.model.Atom
+import ru.vityaman.mylogistics.logic.model.DetailedTransaction
 import ru.vityaman.mylogistics.logic.model.Transfer
 
 trait TransactionRepository {

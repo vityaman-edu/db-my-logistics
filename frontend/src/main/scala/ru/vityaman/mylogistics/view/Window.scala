@@ -55,6 +55,10 @@ object Window {
           div(CapacityList())
         ),
         div(
+          h2("Item Kinds"),
+          div(ItemKindList(storage.itemKinds.signal))
+        ),
+        div(
           h2("Transactions"),
           div(TransactionList(storage.transactions.signal))
         ),
