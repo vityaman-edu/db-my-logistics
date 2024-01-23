@@ -78,6 +78,14 @@ object API {
       dom.ext.Ajax
         .get(s"${base}/storage/${id}/balance")
         .map(xhr => read[List[Pack]](xhr.responseText))
+
+    def addCell(id: Int, atom: Atom): Future[Unit] =
+      dom.ext.Ajax
+        .post(
+          url = s"${base}/storage/${id}/cell",
+          data = write[Atom](atom)
+        )
+        .map(_ => ())
   }
 
   object ItemKind {

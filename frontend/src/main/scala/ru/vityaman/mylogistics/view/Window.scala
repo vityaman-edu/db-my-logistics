@@ -51,6 +51,10 @@ object Window {
           div(StorageList(storage.storages.signal))
         ),
         div(
+          h2("Storage Cells"),
+          div(AddCellForm())
+        ),
+        div(
           h2("Capacity & Balance"),
           div(CapacityList())
         ),
