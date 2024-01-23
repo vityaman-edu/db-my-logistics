@@ -11,6 +11,7 @@ import ru.vityaman.mylogistics.data.jdbc.row.DetailedPackRow
 import ru.vityaman.mylogistics.data.jdbc.row.DetailedStorageRow
 import ru.vityaman.mylogistics.logic.model.Cell
 import ru.vityaman.mylogistics.logic.model.Pack
+import ru.vityaman.mylogistics.logic.model.Atom
 import ru.vityaman.mylogistics.logic.model.Storage
 
 import doobie.Transactor
@@ -93,6 +94,18 @@ private class JdbcStorageRepository(xa: Transactor[Task])
       .compile
       .toList
       .map(_.map(_.asModel))
+
+  override def addCell(id: Storage.Id, atom: Atom): Task[Unit] =
+    sql"""
+    SELECT storage_cell_create(
+      ${id}, 
+      ${atom.itemKind}, 
+      ${atom.amount}
+    )
+    """
+      .query[Unit]
+      .unique
+      .transact(xa)
 }
 
 object JdbcStorageRepository {
