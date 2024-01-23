@@ -67,6 +67,14 @@ object API {
   }
 
   object Storage {
+    def create(name: String): Future[Unit] =
+      dom.ext.Ajax
+        .post(
+          url = s"${base}/storage",
+          data = write[StorageDraft](StorageDraft(name))
+        )
+        .map(_ => ())
+
     def getAll(): Future[List[StorageDetailed]] =
       dom.ext.Ajax
         .get(s"${base}/storage")

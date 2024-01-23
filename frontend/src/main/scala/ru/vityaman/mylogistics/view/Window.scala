@@ -59,6 +59,10 @@ object Window {
           div(StorageList(storage.storages.signal))
         ),
         div(
+          h2("Create Storage"),
+          div(CreateStorageForm())
+        ),
+        div(
           h2("Storage Cells"),
           div(AddCellForm())
         ),
