@@ -67,6 +67,10 @@ object Window {
           div(TransferList(storage.transfers.signal, storage.userId))
         ),
         div(
+          h2("Create Transfer"),
+          div(CreateTransferForm())
+        ),
+        div(
           h2("Add Transfer Atom"),
           div(AddAtomForm())
         )
