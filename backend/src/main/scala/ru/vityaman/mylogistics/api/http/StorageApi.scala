@@ -8,6 +8,7 @@ import zio.json._
 
 import ru.vityaman.mylogistics.api.http.request.AssignAdminRequest
 import ru.vityaman.mylogistics.api.http.request.CreateAtomRequest
+import ru.vityaman.mylogistics.api.http.request.CreateStorageRequest
 import ru.vityaman.mylogistics.api.http.view.CellView
 import ru.vityaman.mylogistics.api.http.view.DetailedStorageView
 import ru.vityaman.mylogistics.api.http.view.PackView
@@ -24,6 +25,16 @@ class StorageApi(service: StorageService) {
           .map(_.map(DetailedStorageView.fromModel))
           .map(_.toJsonPretty)
           .mapBoth(Response.fromThrowable(_), Response.json(_))
+      },
+    POST / "api" / "storage" ->
+      handler { (request: Request) =>
+        request.body.asString
+          .map(_.fromJson[CreateStorageRequest])
+          .flatMap(ZIO.fromEither(_))
+          .mapError(_ => new IllegalArgumentException("invalid"))
+          .map(_.asModel)
+          .flatMap(service.create(_))
+          .mapBoth(Response.fromThrowable(_), _ => Response.ok)
       },
     GET / "api" / "storage" / int("id") / "capacity" / "free" ->
       handler { (id: Int, _: Request) =>

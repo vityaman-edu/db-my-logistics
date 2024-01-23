@@ -15,4 +15,5 @@ trait StorageService {
   def getBalance(id: Storage.Id): Task[Pack.Set]
   def addCell(id: Storage.Id, atom: Atom): Task[Unit]
   def assignAdmin(id: User.Id, storageId: Storage.Id): Task[Unit]
+  def create(storage: Storage.Draft): Task[Unit]
 }

@@ -20,4 +20,8 @@ object Storage {
       name: Storage.Name,
       location: Location
   )
+
+  final case class Draft(
+      name: Storage.Name
+  )
 }

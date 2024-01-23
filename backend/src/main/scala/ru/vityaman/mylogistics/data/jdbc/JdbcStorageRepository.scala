@@ -115,6 +115,14 @@ private class JdbcStorageRepository(xa: Transactor[Task])
       .query[Unit]
       .unique
       .transact(xa)
+
+  override def create(storage: Storage.Draft): Task[Unit] =
+    sql"""
+    SELECT storage_create(${storage.name}, 1)
+    """
+      .query[Unit]
+      .unique
+      .transact(xa)
 }
 
 object JdbcStorageRepository {

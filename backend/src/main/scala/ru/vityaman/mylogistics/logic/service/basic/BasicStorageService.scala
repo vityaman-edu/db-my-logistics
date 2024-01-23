@@ -29,6 +29,9 @@ private class BasicStorageService(repository: StorageRepository)
 
   override def assignAdmin(id: User.Id, storageId: Storage.Id): Task[Unit] =
     repository.adminAssign(id, storageId)
+
+  override def create(storage: Storage.Draft): Task[Unit] =
+    repository.create(storage)
 }
 
 object BasicStorageService {
