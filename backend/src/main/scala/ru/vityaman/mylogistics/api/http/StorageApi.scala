@@ -6,6 +6,7 @@ import zio.http._
 import zio.http.codec.PathCodec.int
 import zio.json._
 
+import ru.vityaman.mylogistics.api.http.request.AssignAdminRequest
 import ru.vityaman.mylogistics.api.http.request.CreateAtomRequest
 import ru.vityaman.mylogistics.api.http.view.CellView
 import ru.vityaman.mylogistics.api.http.view.DetailedStorageView
@@ -63,6 +64,15 @@ class StorageApi(service: StorageService) {
               )
             )
           )
+          .mapBoth(Response.fromThrowable(_), _ => Response.ok)
+      },
+    POST / "api" / "storage" / int("id") / "admin" ->
+      handler { (id: Int, request: Request) =>
+        request.body.asString
+          .map(_.fromJson[AssignAdminRequest])
+          .flatMap(ZIO.fromEither(_))
+          .mapError(_ => new IllegalArgumentException("invalid"))
+          .flatMap(assign => service.assignAdmin(id, assign.userId))
           .mapBoth(Response.fromThrowable(_), _ => Response.ok)
       }
   )

@@ -9,10 +9,11 @@ import ru.vityaman.mylogistics.data.StorageRepository
 import ru.vityaman.mylogistics.data.jdbc.row.DetailedCellRow
 import ru.vityaman.mylogistics.data.jdbc.row.DetailedPackRow
 import ru.vityaman.mylogistics.data.jdbc.row.DetailedStorageRow
+import ru.vityaman.mylogistics.logic.model.Atom
 import ru.vityaman.mylogistics.logic.model.Cell
 import ru.vityaman.mylogistics.logic.model.Pack
-import ru.vityaman.mylogistics.logic.model.Atom
 import ru.vityaman.mylogistics.logic.model.Storage
+import ru.vityaman.mylogistics.logic.model.User
 
 import doobie.Transactor
 import doobie.implicits._
@@ -102,6 +103,14 @@ private class JdbcStorageRepository(xa: Transactor[Task])
       ${atom.itemKind}, 
       ${atom.amount}
     )
+    """
+      .query[Unit]
+      .unique
+      .transact(xa)
+
+  override def adminAssign(id: User.Id, storageId: Storage.Id): Task[Unit] =
+    sql"""
+    SELECT admin_assign(${id}, ${storageId})
     """
       .query[Unit]
       .unique
