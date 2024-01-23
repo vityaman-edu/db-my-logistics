@@ -51,6 +51,10 @@ object Window {
           div(AddUserForm())
         ),
         div(
+          h2("Assign an Admin"),
+          div(AssignAdminForm())
+        ),
+        div(
           h2("Storages"),
           div(StorageList(storage.storages.signal))
         ),
